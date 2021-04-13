@@ -12,4 +12,18 @@
  	
  	</select>
  
+ 	<!-- 리스트 목록 조회 -->
+ 	<select id="getList" resultType="jmp.spring.vo.BoardVo">
+ 	
+		select * from tbl_board
+ 	
+ 	</select>
+ 	
+ 	<insert id="insertBoard">
+ 	
+ 		insert into tbl_board (bno, title, content, writer, regdate)
+values (seq_tbl_board.nextval, '${title}', #{content}, #{writer}, sysdate)
+ 	
+ 	</insert>
+ 	
 </mapper>
