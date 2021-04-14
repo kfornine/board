@@ -27,17 +27,19 @@ public class SampleController {
 		log.info("getList()============");
 		
 	}
-	//µî·ÏÆäÀÌÁö
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/board/register")
 	public void register() {
 		
 	}
 	
 	@PostMapping("/board/register")
-	public String registerExe(BoardVo vo) {
-		log.info(vo);
+	public String registerExe(BoardVo vo, RedirectAttributes rttr) { //redirectì†ì„±ì „ë‹¬
+		log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~"+vo);
 		int res = service.insertBoard(vo);
+		log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~"+vo);
 		
+		rttr.addFlashAttribute("resMsg", vo.getBno()+"ë²ˆ ê²Œì‹œê¸€ì´ ë“±ë¡ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return "redirect:/board/list";
 		
 	}

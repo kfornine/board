@@ -8,6 +8,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script type="text/javascript">
+	var msg ='${resMsg }';
+	if(msg != ''){
+		alert(msg);
+	}
+</script>
 <h1>
 	°Ô½ÃÆÇ
 </h1>
