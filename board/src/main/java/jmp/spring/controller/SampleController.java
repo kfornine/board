@@ -19,14 +19,6 @@ public class SampleController {
 	BoardService service;
 	
 	
-	@GetMapping("/board/list")
-	public void getlist(Model model) {
-		
-		model.addAttribute("list", service.getList());
-		
-		log.info("getList()============");
-		
-	}
 	//등록페이지
 	@GetMapping("/board/register")
 	public void register() {
@@ -34,11 +26,21 @@ public class SampleController {
 	}
 	
 	@PostMapping("/board/register")
-	public String registerExe(BoardVo vo) {
+	public String registerExe(BoardVo vo, RedirectAttributes rttr) {
 		log.info(vo);
 		int res = service.insertBoard(vo);
-		
+		log.info("=========="+vo);
+		rttr.addFlashAttribute("resMsg", vo.getBno()+" 번 게시물 등록 되었습니다.");
 		return "redirect:/board/list";
+		
+	}
+	
+	@GetMapping("/board/list")
+	public void getlist(Model model) {
+		
+		model.addAttribute("list", service.getList());
+		
+		log.info("getList()============");
 		
 	}
 	
