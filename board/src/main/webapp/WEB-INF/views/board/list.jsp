@@ -9,7 +9,10 @@
 </head>
 <body>
 <script type="text/javascript">
-	alert(${resMsg})
+	if('${resMsg}'!=""){
+		alert('${resMsg}');
+	}
+	
 </script>
 <h1>
 	게시판

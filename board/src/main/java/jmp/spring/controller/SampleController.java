@@ -19,7 +19,21 @@ public class SampleController {
 	BoardService service;
 	
 	
-	//���������
+	@GetMapping({"/board/get","/board/edit"})
+	public void get(BoardVo vo ,Model model) {
+		//상세정보조회
+		vo = service.get(vo.getBno());
+		
+		//모델에 담아서 화면에 전달
+		model.addAttribute("vo", vo);
+		
+		//리턴이없으므로 /board/get(URL)로 페이지연결
+		
+	}
+	
+	
+	
+	//등록페이지로 이동
 	@GetMapping("/board/register")
 	public void register() {
 		
@@ -30,7 +44,7 @@ public class SampleController {
 		log.info(vo);
 		int res = service.insertBoard(vo);
 		log.info("=========="+vo);
-		rttr.addFlashAttribute("resMsg", vo.getBno()+" �� �Խù� ��� �Ǿ����ϴ�.");
+		rttr.addFlashAttribute("resMsg", vo.getBno()+"번 게시글이 작성되었습니다");
 		return "redirect:/board/list";
 		
 	}
@@ -41,11 +55,6 @@ public class SampleController {
 		model.addAttribute("list", service.getList());
 		
 		log.info("getList()============");
-		
-	}
-	
-	@GetMapping("/board/get")
-	public void get() {
 		
 	}
 	

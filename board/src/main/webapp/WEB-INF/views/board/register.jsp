@@ -1,28 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 <h1>
-	°Ô½ÃÆÇ 
+	ê²Œì‹œíŒ 
 </h1>
 <form action="/board/register" method="post">
 	<table border=1>
 			<tr>
-			<td>Á¦¸ñ</td><td><input type="text" name="title"></td>
+			<td>ì œëª©</td><td><input type="text" name=title></td>
 			</tr>
 			<tr>
-			<td>³»¿ë</td><td><textarea rows="5" cols="33" name="content"></textarea></td>
+			<td>ë‚´ìš©</td><td><textarea rows="5" cols="33" name=content></textarea></td>
 			</tr>
 			<tr>
-			<td>ÀÛ¼ºÀÚ</td><td><input type="text" name="writer"></td>
+			<td>ìž‘ì„±ìž</td><td><input type="text" name=writer></td>
 			</tr>
 	</table>
-		<input type="submit" value="Á¦Ãâ">
+		<input type="submit" value="ì œì¶œ">
 </form>
 
 </body>
