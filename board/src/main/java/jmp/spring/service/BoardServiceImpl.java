@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jmp.spring.mapper.BoardMapper;
 import jmp.spring.vo.BoardVo;
+
 @Service
 public class BoardServiceImpl implements BoardService {
 
@@ -23,18 +24,6 @@ public class BoardServiceImpl implements BoardService {
 	public int insertBoard(BoardVo vo) {
 		// TODO Auto-generated method stub
 		return mapper.insertBoard(vo);
-	}
-
-	@Override
-	public BoardVo get(int bno) {
-		// TODO Auto-generated method stub
-		return mapper.get(bno);
-	}
-
-	@Override
-	public int update(BoardVo vo) {
-		return mapper.update(vo);
-				
 	}
 
 }

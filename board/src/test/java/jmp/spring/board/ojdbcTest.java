@@ -33,58 +33,20 @@ public class ojdbcTest {
 	BoardMapper mapper;
 	
 	
-	
-	@Test
-	public void service2() {
-		BoardVo vo = new BoardVo();
-		vo.setBno(2);
-		vo.setContent("ì—…ë°ì´íŠ¸");
-		vo.setTitle("í…ŒìŠ¤íŠ¸");
-		vo.setWriter("ëƒ¥ëƒ¥");
-		service.update(vo);
-	}
-	
-	@Test
-	public void updateMapper() {
-		BoardVo vo = new BoardVo();
-		vo.setBno(2);
-		vo.setContent("ì—…ë°ì´íŠ¸");
-		vo.setTitle("í…ŒìŠ¤íŠ¸");
-		vo.setWriter("ëƒ¥ëƒ¥");
-		
-		int res = mapper.update(vo);
-		
-		log.info(res);
-	}
-	
-	
-	@Test
-	public void getService() {
-		BoardVo vo = service.get(3);
-		log.info(vo);
-	}
-	
-	
-	@Test
-	public void get() {
-		BoardVo vo = mapper.get(3);
-		log.info(vo);
-	}
-	
 	/**
 	 * 
-	 * ï¿½Û¼ï¿½ï¿½ï¿½ :
-	 * ï¿½Û¼ï¿½ï¿½ï¿½ :
-	 * ï¿½ï¿½È¯ï¿½ï¿½ :
+	 * ÀÛ¼ºÀÚ :
+	 * ÀÛ¼ºÀÏ :
+	 * ¹İÈ¯°ª :
 	 */
 	
 	
 	@Test
 	public void mapperp() {
 		BoardVo vo = new BoardVo();
-		vo.setContent("ï¿½ï¿½ï¿½ï¿½-mapperTest");
-		vo.setTitle("ï¿½ï¿½ï¿½ï¿½-mapperTest");
-		vo.setWriter("ï¿½Û¼ï¿½ï¿½ï¿½-mapperTest");
+		vo.setContent("³»¿ë-mapperTest");
+		vo.setTitle("Á¦¸ñ-mapperTest");
+		vo.setWriter("ÀÛ¼ºÀÚ-mapperTest");
 		
 		int res = mapper.insertBoard(vo);
 		

@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="jmp.spring">
+	<logger name="jmp.spring.board">
 		<level value="debug" />
 	</logger>
 	
