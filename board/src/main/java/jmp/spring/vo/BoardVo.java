@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class BoardVo {
 
-	int bno; //¹øÈ£
-	String title; //Á¦¸ñ
-	String content; //³»¿ë
-	String writer; //ÀÛ¼ºÀÚ
-	String regdate; //ÀÛ¼ºÀÏ
-	String updatedate; //¼öÁ¤ÀÏ
+	int bno; //ë²ˆí˜¸
+	String title; //ì œëª©
+	String content; //ë‚´ìš©
+	String writer; //ì‘ì„±ì
+	String regdate; //ì‘ì„±ì¼
+	String updatedate; //ìˆ˜ì •ì¼
 
 }

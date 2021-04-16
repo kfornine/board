@@ -33,6 +33,11 @@ public class ojdbcTest {
 	BoardMapper mapper;
 	
 	
+	@Test
+	public void deleteMapper() {
+		int res = mapper.delete(4);
+		System.out.println(res);
+	}
 	
 	@Test
 	public void service2() {

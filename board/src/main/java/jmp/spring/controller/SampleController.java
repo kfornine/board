@@ -18,6 +18,43 @@ public class SampleController {
 	@Autowired
 	BoardService service;
 	
+	@GetMapping("/board/delete")
+	public String delete(BoardVo vo,RedirectAttributes rttr) {
+		int res = service.delete(vo.getBno());
+		String resMsg="";
+		// 삭제 성공 -> 리스트
+		if(res>0) {
+			resMsg= vo.getBno()+"번 게시글이 삭제 되었습니다";
+			rttr.addFlashAttribute("resMsg", resMsg);
+			return "redirect:/board/list";
+			
+		}else {
+			//삭제실패 -> 상세화면
+			resMsg="게시글 삭제 처리에 실패했습니다.";
+			rttr.addAttribute("bno", vo.getBno());
+			rttr.addFlashAttribute("resMsg", resMsg);
+			return "redirect:/board/get";
+		}
+	}
+	
+	
+	//에딧(포스트)
+	@PostMapping("/board/edit")
+	public String editExe(BoardVo vo, RedirectAttributes rttr) {
+		
+		int res = service.update(vo);
+		String resMsg = "";
+		
+		if(res>0) {
+			resMsg = "수정되었습니다";
+		}else {
+			resMsg = "수정작업이 실패 했습니다. 관리자에게 문의해주세요.";
+		}
+		rttr.addAttribute("bno", vo.getBno());//bno에파라미터값 넣기
+		rttr.addFlashAttribute("resMsg", resMsg);
+		return "redirect:/board/get";
+		
+	}
 	
 	@GetMapping({"/board/get","/board/edit"})
 	public void get(BoardVo vo ,Model model) {
@@ -63,9 +100,5 @@ public class SampleController {
 		
 	}
 	
-	@GetMapping("/delete")
-	public void delete() {
-		
-	}
 
 }

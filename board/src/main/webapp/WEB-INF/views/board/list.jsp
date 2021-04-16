@@ -20,8 +20,8 @@
 <table border=1>
 	<c:forEach items="${list}" var="list">
 	<tr>
-		<td><c:out value="${list.bno}"/></td>
-		<td><c:out value="${list.title}"/></td>
+		<td><a href="/board/get?bno=${list.bno }">
+		<c:out value="${list.title}"/></a></td>
 		<td><c:out value="${list.writer}"/></td>
 		<td><c:out value="${list.regdate}"/></td>
 	</tr>

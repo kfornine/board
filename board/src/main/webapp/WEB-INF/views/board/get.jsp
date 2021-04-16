@@ -7,10 +7,15 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script type="text/javascript">
+if('${resMsg }' != ""){
+	alert('${resMsg }');
+}
+</script>
 <h1>
 	게시판 
 </h1>
-<form action="/board/register" method="post">
+<form>
 	<table border=1>
 			<tr>
 			<td>제목</td><td>${vo.title }</td>
@@ -22,8 +27,8 @@
 			<td>작성자</td><td>${vo.writer }</td>
 			</tr>
 	</table>
-		<input type="submit" value="제출">
+		<button type="button" onClick="location.href='/board/edit?bno=${vo.bno }'">수정</button>
+		<button type="button" onClick="location.href='/board/delete?bno=${vo.bno }'">삭제</button>
 </form>
-
 </body>
 </html>

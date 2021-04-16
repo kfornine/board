@@ -38,6 +38,10 @@ values (#{bno}, '${title}', #{content}, #{writer}, sysdate)
  		
  	</insert>
  	
+ 	<delete id="delete" >
  	
+ 		DELETE FROM tbl_board WHERE bno=#{bno}
+ 		
+ 	</delete>
  	
 </mapper>
