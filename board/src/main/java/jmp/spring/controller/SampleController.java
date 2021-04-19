@@ -9,6 +9,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jmp.spring.service.BoardService;
 import jmp.spring.vo.BoardVo;
+import jmp.spring.vo.Criteria;
+import jmp.spring.vo.PageNavi;
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -56,8 +58,8 @@ public class SampleController {
 		
 	}
 	
-	@GetMapping({"/board/get","/board/edit"})
-	public void get(BoardVo vo ,Model model) {
+	@GetMapping("/board/get")
+	public String get(BoardVo vo ,Model model) {
 		//상세정보조회
 		vo = service.get(vo.getBno());
 		
@@ -66,14 +68,27 @@ public class SampleController {
 		
 		//리턴이없으므로 /board/get(URL)로 페이지연결
 		
+		return "/board/get_b";
 	}
 	
+	@GetMapping("/board/edit")
+	public String edit(BoardVo vo ,Model model) {
+		//상세정보조회
+		vo = service.get(vo.getBno());
+		
+		//모델에 담아서 화면에 전달
+		model.addAttribute("vo", vo);
+		
+		//리턴이없으므로 /board/get(URL)로 페이지연결
+		
+		return "/board/edit_b";
+	}
 	
 	
 	//등록페이지로 이동
 	@GetMapping("/board/register")
-	public void register() {
-		
+	public String register() {
+		return "/board/register_b";
 	}
 	
 	@PostMapping("/board/register")
@@ -87,18 +102,16 @@ public class SampleController {
 	}
 	
 	@GetMapping("/board/list")
-	public void getlist(Model model) {
+	public String getlist(Criteria cri, Model model) {
 		
-		model.addAttribute("list", service.getList());
+		model.addAttribute("list", service.getList(cri));
+		
+		model.addAttribute("pageNavi", new PageNavi(cri, service.getTotal()));
 		
 		log.info("getList()============");
 		
+		return "/board/list_b";
+				
 	}
-	
-	@PostMapping("/edit")
-	public void edit() {
-		
-	}
-	
 
 }

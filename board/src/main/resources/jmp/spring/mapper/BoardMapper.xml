@@ -15,10 +15,18 @@
  	<!-- 리스트 목록 조회 -->
  	<select id="getList" resultType="jmp.spring.vo.BoardVo">
  	
-		select * from tbl_board
+		select * from 	
+		(select ROW_NUMBER() OVER (ORDER BY bno desc) row_num, tbl.*
+		from tbl_board tbl)
+		where row_num between #{pageNo}*#{amount}-9 and #{pageNo}*#{amount}
  	
  	</select>
  	
+ 	<select id="getTotal" resultType="int">
+ 	 select count(*) from tbl_board
+ 	</select>
+ 	
+ 	<!-- 총 게시글갯수 -->
  	<select id="get" resultType="jmp.spring.vo.BoardVo">
  		select * from tbl_board where bno=#{bno}
  	</select>

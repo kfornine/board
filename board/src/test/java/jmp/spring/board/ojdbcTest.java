@@ -3,6 +3,7 @@ package jmp.spring.board;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import jmp.spring.mapper.BoardMapper;
 import jmp.spring.service.BoardService;
 import jmp.spring.vo.BoardVo;
+import jmp.spring.vo.Criteria;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -32,12 +34,32 @@ public class ojdbcTest {
 	@Autowired
 	BoardMapper mapper;
 	
+	@Test
+	public void getTotall() {
+		int res = service.getTotal();
+		
+		log.info(res);
+	}
+	
+	
+	@Test
+	public void getListt() {
+		Criteria cri = new Criteria();
+		
+		cri.setPageNo(2);
+		
+		List<BoardVo> list = service.getList(cri);
+		
+		log.info(list);
+	}
 	
 	@Test
 	public void deleteMapper() {
 		int res = mapper.delete(4);
 		System.out.println(res);
 	}
+	
+	
 	
 	@Test
 	public void service2() {
@@ -101,13 +123,13 @@ public class ojdbcTest {
 	
 	@Test
 	public void service() {
-		log.info("service============================" + service.getList());
+		//log.info("service============================" + service.getList());
 		
 	}
 	
 	@Test
 	public void mapper() {
-		log.info("getlist======================" + mapper.getList()); 
+		//log.info("getlist======================" + mapper.getList(cri)); 
 		log.info("mapper===================" + mapper.getTime());
 		log.info("mapper===================" + mapper.getTime2());
 	}
