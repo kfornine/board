@@ -17,13 +17,38 @@
  	
 		select * from 	
 		(select ROW_NUMBER() OVER (ORDER BY bno desc) row_num, tbl.*
-		from tbl_board tbl)
+		from tbl_board tbl
+		where 1=1
+		<!-- 조건이 있을수도 없을수도 있음
+		검색조건의 타입과 키워드 값에 의해 생성이 될수도 있고 안될수도있음  -->
+			<if test="type=='title' and keyword != ''">
+				and title like '%'	||	#{keyword} ||	'%'
+			</if>
+			<if test="type=='content' and keyword != ''">
+				and title like '%'	||	#{keyword} ||	'%'
+			</if>
+			<if test="type=='writer' and keyword != ''">
+				and title like '%'	||	#{keyword} ||	'%'
+			</if>
+		)
 		where row_num between #{pageNo}*#{amount}-9 and #{pageNo}*#{amount}
  	
  	</select>
  	
  	<select id="getTotal" resultType="int">
  	 select count(*) from tbl_board
+ 	 where 1=1
+		<!-- 조건이 있을수도 없을수도 있음
+		검색조건의 타입과 키워드 값에 의해 생성이 될수도 있고 안될수도있음  -->
+			<if test="type=='title' and keyword != ''">
+				and title like '%'	||	#{keyword} ||	'%'
+			</if>
+			<if test="type=='content' and keyword != ''">
+				and title like '%'	||	#{keyword} ||	'%'
+			</if>
+			<if test="type=='writer' and keyword != ''">
+				and title like '%'	||	#{keyword} ||	'%'
+			</if>
  	</select>
  	
  	<!-- 총 게시글갯수 -->

@@ -20,25 +20,48 @@ public class SampleController {
 	@Autowired
 	BoardService service;
 	
-	@GetMapping("/board/delete")
-	public String delete(BoardVo vo,RedirectAttributes rttr) {
-		int res = service.delete(vo.getBno());
-		String resMsg="";
-		// 삭제 성공 -> 리스트
-		if(res>0) {
-			resMsg= vo.getBno()+"번 게시글이 삭제 되었습니다";
-			rttr.addFlashAttribute("resMsg", resMsg);
-			return "redirect:/board/list";
-			
-		}else {
-			//삭제실패 -> 상세화면
-			resMsg="게시글 삭제 처리에 실패했습니다.";
-			rttr.addAttribute("bno", vo.getBno());
-			rttr.addFlashAttribute("resMsg", resMsg);
-			return "redirect:/board/get";
-		}
+	//리스트페이지
+	@GetMapping("/board/list")
+	public String getlist(Criteria cri, Model model) {
+		
+		model.addAttribute("list", service.getList(cri));
+		
+		model.addAttribute("pageNavi", new PageNavi(cri, service.getTotal(cri)));
+		
+		log.info("getList()============");
+		
+		return "/board/list_b";
+				
 	}
 	
+	//등록페이지로 이동
+	@GetMapping("/board/register")
+	public String register() {
+		return "/board/register_b";
+	}
+	
+	@PostMapping("/board/register")
+	public String registerExe(BoardVo vo, RedirectAttributes rttr) {
+		log.info(vo);
+		int res = service.insertBoard(vo);
+		log.info("=========="+vo);
+		rttr.addFlashAttribute("resMsg", vo.getBno()+"번 게시글이 작성되었습니다");
+		return "redirect:/board/list";
+		
+	}
+	
+	//상세정보조회
+	@GetMapping("/board/get")
+	public String get(BoardVo vo ,Model model) {
+		vo = service.get(vo.getBno());
+		
+		//모델에 담아서 화면에 전달
+		model.addAttribute("vo", vo);
+		
+		//리턴이없으므로 /board/get(URL)로 페이지연결
+		
+		return "/board/get_b";
+	}
 	
 	//에딧(포스트)
 	@PostMapping("/board/edit")
@@ -58,19 +81,6 @@ public class SampleController {
 		
 	}
 	
-	@GetMapping("/board/get")
-	public String get(BoardVo vo ,Model model) {
-		//상세정보조회
-		vo = service.get(vo.getBno());
-		
-		//모델에 담아서 화면에 전달
-		model.addAttribute("vo", vo);
-		
-		//리턴이없으므로 /board/get(URL)로 페이지연결
-		
-		return "/board/get_b";
-	}
-	
 	@GetMapping("/board/edit")
 	public String edit(BoardVo vo ,Model model) {
 		//상세정보조회
@@ -84,34 +94,24 @@ public class SampleController {
 		return "/board/edit_b";
 	}
 	
-	
-	//등록페이지로 이동
-	@GetMapping("/board/register")
-	public String register() {
-		return "/board/register_b";
-	}
-	
-	@PostMapping("/board/register")
-	public String registerExe(BoardVo vo, RedirectAttributes rttr) {
-		log.info(vo);
-		int res = service.insertBoard(vo);
-		log.info("=========="+vo);
-		rttr.addFlashAttribute("resMsg", vo.getBno()+"번 게시글이 작성되었습니다");
-		return "redirect:/board/list";
-		
-	}
-	
-	@GetMapping("/board/list")
-	public String getlist(Criteria cri, Model model) {
-		
-		model.addAttribute("list", service.getList(cri));
-		
-		model.addAttribute("pageNavi", new PageNavi(cri, service.getTotal()));
-		
-		log.info("getList()============");
-		
-		return "/board/list_b";
-				
+	//삭제
+	@GetMapping("/board/delete")
+	public String delete(BoardVo vo,RedirectAttributes rttr) {
+		int res = service.delete(vo.getBno());
+		String resMsg="";
+		// 삭제 성공 -> 리스트
+		if(res>0) {
+			resMsg= vo.getBno()+"번 게시글이 삭제 되었습니다";
+			rttr.addFlashAttribute("resMsg", resMsg);
+			return "redirect:/board/list";
+			
+		}else {
+			//삭제실패 -> 상세화면
+			resMsg="게시글 삭제 처리에 실패했습니다.";
+			rttr.addAttribute("bno", vo.getBno());
+			rttr.addFlashAttribute("resMsg", resMsg);
+			return "redirect:/board/get";
+		}
 	}
 
 }

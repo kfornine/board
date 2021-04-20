@@ -18,6 +18,7 @@ import jmp.spring.mapper.BoardMapper;
 import jmp.spring.service.BoardService;
 import jmp.spring.vo.BoardVo;
 import jmp.spring.vo.Criteria;
+import jmp.spring.vo.PageNavi;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -33,6 +34,16 @@ public class ojdbcTest {
 	
 	@Autowired
 	BoardMapper mapper;
+	
+	@Test
+	public void test33() {
+		Criteria cri = new Criteria();
+		cri.setPageNo(15);
+		
+		PageNavi pagenavi = new PageNavi(cri, 150);
+		log.info(pagenavi);
+	}
+	
 	
 	@Test
 	public void getTotall() {

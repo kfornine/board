@@ -7,6 +7,23 @@
 if('${resMsg }' != ""){
 	alert('${resMsg }');
 }
+
+//내가 선택한 페이지로 이동
+function page(page) {
+
+	document.listForm.action="/board/list";
+	document.listForm.pageNo.value=page;
+	document.listForm.submit();
+	
+	//location.href = "/board/list?pageNo="+page;
+}
+
+//상세 보기 이동
+function detail(bno) {
+	document.listForm.action="/board/get";
+	document.listForm.bno.value=bno;
+	document.listForm.submit();
+}
 </script>
 
         <div id="page-wrapper">
@@ -25,7 +42,7 @@ if('${resMsg }' != ""){
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table width="100%" class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>번호</th>
@@ -38,7 +55,7 @@ if('${resMsg }' != ""){
                              	   <c:forEach items="${list}" var="list">
                                     <tr class="odd gradeX">
                                         <td>${list.bno }</td>
-                                        <td><a href="/board/get?bno=${list.bno}"> ${list.title}</a></td>
+                                        <td onclick="detail(${list.bno})"><a href="#">${list.title}</a></td>
                                         <td>${list.writer}</td>
                                         <td class="center">${list.regdate}"</td>
                                     </tr>
@@ -56,23 +73,53 @@ if('${resMsg }' != ""){
                             
                             <nav aria-label="...">
 							  <ul class="pagination">
-							    <li class="page-item disabled">
-							    <c:if test="${pageNavi.prev}">
-							      <a class="page-link" href="/board/list?pageNo=${pageNavi.startPage-1}">Previous</a></c:if>
+							  
+							  	<c:if test="${pageNavi.prev}">
+							    <li class="page-item" onclick="javascript:page(${pageNavi.startPage-1})">
+							      <a class="page-link"  href="/board/list?pageNo=${pageNavi.startPage-1}">Previous</a>
 							    </li>
-							    <li class="page-item"><a class="page-link" href="#">1</a></li>
-							    <li class="page-item active" aria-current="page">
-							      <a class="page-link" href="#">2</a>
-							    </li>
-							    <li class="page-item"><a class="page-link" href="#">3</a></li>
-							    <li class="page-item">
+							    </c:if>
+							    <!--choose(switch),when(case),otherwise(default)  -->
+							    <c:forEach begin="${pageNavi.startPage}" end="${pageNavi.endPage }" var="page">
+								    <c:choose>  
+									    <c:when test="${page eq pageNavi.cri.pageNo }">
+									    <li class="page-item active" onclick="page(${page})" aria-current="page">
+									      <a class="page-link" href="#" >${page }<span class="sr-only"></span></a>
+									    </li>
+									    </c:when>
+										    <c:otherwise>
+										  	  <li class="page-item" onclick="page(${page})"><a class="page-link" href="#">${page }</a></li>
+										    </c:otherwise>
+								    </c:choose>
+							    </c:forEach>
+							    
 							    <c:if test="${pageNavi.next}"> 
-							     <a class="page-link" href="/board/list?pageNo=${pageNavi.startPage+11}">Next</a></c:if>
+							    <li class="page-item">
+							     <a class="page-link" href="/board/list?pageNo=${pageNavi.endPage+1}">Next</a>
 							    </li>
+							    </c:if>
 							  </ul>
 							</nav>
-                            
-                            
+							<!-- 페이지끝 -->
+							
+							<!-- 검색 -->
+							<form method="get" action="/board/list" name="listForm">
+	                            <!-- 상세보기 검색 유지용 -->
+	                            <input type="text" name="bno">
+	                            <input type="text" name="pageNo" value="${pageNavi.cri.pageNo }">
+	                            <!-- 상세보기 검색 유지용 끝 -->
+								<div class="form-inline">
+	                            <select class="form-control" name="type">
+	                                <option value="title">제목</option>
+	                                <option value="content">내용</option>
+	                                <option value="writer">작성자</option>
+	                            </select>
+	                            
+	                            <input class="form-control" name="keyword" value="${pageNavi.cri.keyword }">
+	                            <button type="submit" class="btn btn-default">검색</button>
+	                            </div>
+                            </form>
+                            <!-- 검색 끝 -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
