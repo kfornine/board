@@ -61,6 +61,15 @@ function detail(bno) {
                                     </tr>
                                     </c:forEach>
                                     
+                                    <!-- 게시글없다는 표시 -->
+                                    <c:if test="${list.size() == 0}">
+                                    <tr class="odd gradeX">
+                                    	<td colspan='4'>
+                                    	게시글이 존재하지 않습니다
+                                    	</td>
+                                    </tr>
+                                    </c:if>
+                                    
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
@@ -105,18 +114,18 @@ function detail(bno) {
 							<!-- 검색 -->
 							<form method="get" action="/board/list" name="listForm">
 	                            <!-- 상세보기 검색 유지용 -->
-	                            <input type="text" name="bno">
-	                            <input type="text" name="pageNo" value="${pageNavi.cri.pageNo }">
+	                            <input type="hidden" name="bno">
+	                            <input type="hidden" name="pageNo" value="${pageNavi.cri.pageNo }">
 	                            <!-- 상세보기 검색 유지용 끝 -->
 								<div class="form-inline">
 	                            <select class="form-control" name="type">
-	                                <option value="title">제목</option>
-	                                <option value="content">내용</option>
-	                                <option value="writer">작성자</option>
+	                                <option value="title" <c:if test="${pageNavi.cri.type=='title'}">selected</c:if> >제목</option>
+	                                <option value="content" <c:if test="${pageNavi.cri.type=='content'}">selected</c:if> >내용</option>
+	                                <option value="writer" <c:if test="${pageNavi.cri.type=='writer'}">selected</c:if> >작성자</option>
 	                            </select>
 	                            
 	                            <input class="form-control" name="keyword" value="${pageNavi.cri.keyword }">
-	                            <button type="submit" class="btn btn-default">검색</button>
+	                            <button type="submit" onclick="page(1)" class="btn btn-default">검색</button>
 	                            </div>
                             </form>
                             <!-- 검색 끝 -->

@@ -7,6 +7,14 @@
 if('${resMsg }' != ""){
 	alert('${resMsg }');
 }
+
+//상세 보기 이동
+function detailBtn(url) {
+	document.detailForm.action=url;
+	document.detailForm.submit();
+	
+	//console.log("log",detailBtn);
+}
 </script>
 
         <div id="page-wrapper">
@@ -42,9 +50,17 @@ if('${resMsg }' != ""){
                                   <textarea readonly class="form-control" rows="3">${vo.regdate }</textarea>
                               </div>
                               
-                               	<button type="button" class="btn btn-default" onClick="location.href='/board/edit?bno=${vo.bno }'">수정</button>
-								<button type="button" class="btn btn-default" onClick="location.href='/board/delete?bno=${vo.bno }'">삭제</button>
-									<button type="button" class="btn btn-default" onClick="location.href='/board/list'">목록</button>
+                               	<button type="button" class="btn btn-default" onClick="detailBtn('/board/edit')"<%-- onClick="location.href='/board/edit?bno=${vo.bno }'" --%>>수정</button>
+								<button type="button" class="btn btn-default" onClick="detailBtn('/board/delete')">삭제</button>
+								<button type="button" class="btn btn-default" onClick="detailBtn('/board/list')">목록</button>
+								
+								<form method="get" name="detailForm">
+									<input type="hidden" name="bno" value="${vo.bno}">
+									<input type="hidden" name="pageNo" value="${criteria.pageNo}">
+									<input type="hidden" name="type" value="${criteria.type}">
+									<input type="hidden" name="keyword" value="${criteria.keyword}">
+								</form>	
+								
                         </div>
                         <!-- /.panel-body -->
                     </div>

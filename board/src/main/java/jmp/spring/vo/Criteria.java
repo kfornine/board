@@ -18,5 +18,10 @@ public class Criteria {
 		this.amount = 10;
 	}
 	
+	public Criteria(int pageNo,int amount) { //매개변수가 있는생성자
+		this.pageNo = pageNo;
+		this.amount = amount;
+	}
+	
 	
 }

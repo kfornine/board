@@ -47,7 +47,7 @@ public class ojdbcTest {
 	
 	@Test
 	public void getTotall() {
-		int res = service.getTotal();
+		int res = service.getTotal(null);
 		
 		log.info(res);
 	}

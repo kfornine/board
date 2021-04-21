@@ -4,7 +4,11 @@
 <jsp:include page="/resources/header/header.jsp"/>
 
 <form action="/board/edit" method="post">
-	<input type=text name=bno value=${vo.bno }>
+	<input type="hidden" name="pageNo" value="${criteria.pageNo}">
+	<input type="hidden" name="type" value="${criteria.type}">
+	<input type="hidden" name="keyword" value="${criteria.keyword}">
+	
+	<input type=hidden name=bno value=${vo.bno }>
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
