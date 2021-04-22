@@ -20,6 +20,10 @@ public class SampleController {
 	@Autowired
 	BoardService service;
 	
+	@GetMapping("/board/RestTest")
+	public void restTest() {
+	}
+	
 	//리스트페이지
 	@GetMapping("/board/list")
 	public String getlist(Criteria cri, Model model) {

@@ -44,6 +44,7 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.delete(bno);
 	}
 
+	//전체페이지값 구하기
 	@Override
 	public int getTotal(Criteria cri) {
 		// TODO Auto-generated method stub
