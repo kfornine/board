@@ -11,6 +11,7 @@ import jmp.spring.service.BoardService;
 import jmp.spring.vo.BoardVo;
 import jmp.spring.vo.Criteria;
 import jmp.spring.vo.PageNavi;
+import jmp.spring.vo.ReplyVo;
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -19,6 +20,11 @@ public class SampleController {
 	
 	@Autowired
 	BoardService service;
+	
+	@GetMapping("/reply")
+	public String replyy() {
+		return "/board/reply";
+	}
 	
 	@GetMapping("/board/RestTest")
 	public void restTest() {

@@ -25,7 +25,7 @@ function getAjaxList(){
 	
 	$.ajax({
 		//서버 접속 url 1->bno
-		url : '/reply/list/1',
+		url : '/reply/list/2',
 		methord : 'get',
 		dataType : 'json',
 		// 처리 성공

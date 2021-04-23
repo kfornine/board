@@ -5,32 +5,44 @@
 <jsp:include page="/resources/header/header.jsp"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
+<script src="/resources/js/reply.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-
+//리플작성 AjaxInsert() 서버통신, getAjaxList
 $(document).ready(
-	function(){
-	getAjaxList();
-	});
-
-function getAjaxList(){
+function(){
 	
-	$.ajax({
-		url : '/reply/list/1',
-		method : 'get',
-		dataType : 'json',
-		success : fuction(data, status, xhr){
-			console.log("data",data);
-		},
-		error : function(xhr, status, error){
-			console.log("error",error)
-		}		
+	//addReplyBtn을 클릭하면 모델창을 보여줌
+	$("#addReplyBtn").on("click",function(){
+		$("#replyInsertBtn").show();
+		$("#reply").val("");
+		$("#replyer").val("");
+		$("#myModal").modal("show");
+	});
+	
+	//저장버튼을 클릭하면 저장하고 모달창을 닫아준다
+	$("#replyInsertBtn").on("click",function(){
+		//리플작성
+		AjaxInsert();
 		
+		//리스트 조회하기(콜백 후에(비동기시라서))
 	});
-	
+	getAjaxList()});
+/*
+ * 리플 상세화면을 보여준다
+ */
+function replyDetail(rno){
+	$("#rno").val(rno);
+	//버튼 숨김 처리
+	$("#replyInsertBtn").hide();
+	//모달창 보여주기
+	$("#myModal").modal("show");
+	//상세내용조회
+	getAjax(); //ajax실행
 }
 
-
 </script>
+
 
 
         <div id="page-wrapper">
@@ -83,6 +95,8 @@ function getAjaxList(){
 							
 								<div class="panel-footer"></div>
 							
+							bno<input type="text" value="2" id="bno" ><br>
+							rno<input type="text" id="rno"><br>
 							
 									</div>
 							  </div>
@@ -126,7 +140,7 @@ function getAjaxList(){
                            </div>
                            <div class="modal-footer">
                                <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
-                               <button type="button" class="btn btn-primary">save</button>
+                               <button type="button" class="btn btn-primary" id="replyInsertBtn">save</button>
                            </div>
                        </div>
                        <!-- /.modal-content -->
