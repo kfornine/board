@@ -39,4 +39,8 @@
  		delete tbl_reply where rno=#{rno}
  	</delete>
  	
+ 	<select id="getTotal" resultType="int">
+ 		select count(*) from tbl_reply where bno=#{bno}
+ 	</select>
+ 	
 </mapper>

@@ -20,6 +20,19 @@ function(){
 		$("#myModal").modal("show");
 	});
 	
+	$("#modifyBtn").on("click",function(){
+		updateAjax();
+		
+	});
+	
+	$("#removeBtn").on("click",function(){
+		deleteAjax();
+		
+	});
+
+	// 선택자
+	// 아이디 : #, class :. , 태그
+	
 	//저장버튼을 클릭하면 저장하고 모달창을 닫아준다
 	$("#replyInsertBtn").on("click",function(){
 		//리플작성
@@ -40,6 +53,36 @@ function replyDetail(rno){
 	//상세내용조회
 	getAjax(); //ajax실행
 }
+
+function replyPage(pageNavi){
+	
+	var startPage = pageNavi.startPage;
+	var endPage = pageNavi.endPage;
+	var pageContent = "";
+	
+	// 이전페이지, 다음페이지
+	//pageNavi.prev;
+	//pageNavi.next;
+	
+	//이전  페이지네비게이션으로 이동
+	if(pageNavi.prev){
+		pageContent +=
+			'<li class="page-item disabled">'
+		   +'<a class="page-link" href="#" tabindex="-1">Previous</a>'
+		   +'</li>';
+	}
+	
+	for(startPage; startPage<endPage; startPage++){
+		pageContent += '<li class="page-item"><a class="page-link" href="#">'+startPage+'</a></li>'
+	}
+	//다음 페이지네비게이션으로 이동
+	if(pageNavi.next){
+		
+	}
+	$(".pagination").html(pageContent);
+}
+	
+
 
 </script>
 
@@ -93,11 +136,19 @@ function replyDetail(rno){
 							      </div>
 							      <!-- /.panel .chat-panel -->
 							
-								<div class="panel-footer"></div>
+								<div class="panel-footer">
+								
+									<!-- 페이징  -->
+									<nav aria-label="...">
+									<ul class="pagination">
+									</ul>
+									</nav>
+								
+								</div>
 							
 							bno<input type="text" value="2" id="bno" ><br>
 							rno<input type="text" id="rno"><br>
-							
+							pageNo<input type="text" id="pageNo" value="1">
 									</div>
 							  </div>
 							  <!-- ./ end row -->
@@ -139,6 +190,8 @@ function replyDetail(rno){
 							</ul>
                            </div>
                            <div class="modal-footer">
+                               <button type="button" class="btn btn-warning" data-dismiss="modal" id="modifyBtn">Modify</button>
+                               <button type="button" class="btn btn-danger" data-dismiss="modal" id="removeBtn">Remove</button>
                                <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
                                <button type="button" class="btn btn-primary" id="replyInsertBtn">save</button>
                            </div>

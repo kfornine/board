@@ -35,6 +35,7 @@ public class ojdbcTest {
 	@Autowired
 	BoardMapper mapper;
 	
+	
 	@Test
 	public void test33() {
 		Criteria cri = new Criteria();

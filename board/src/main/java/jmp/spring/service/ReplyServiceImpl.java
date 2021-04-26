@@ -44,4 +44,10 @@ public class ReplyServiceImpl implements ReplyService {
 		return mapper.getList(bno);
 	}
 
+	@Override
+	public int getTotal(int bno) {
+		// TODO Auto-generated method stub
+		return mapper.getTotal(bno);
+	}
+
 }

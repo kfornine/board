@@ -12,16 +12,49 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jmp.spring.service.ReplyService;
+import jmp.spring.vo.Criteria;
+import jmp.spring.vo.PageNavi;
 import jmp.spring.vo.ReplyVo;
 import lombok.extern.log4j.Log4j;
 
-@RestController
+@RestController //자료형을 반환값으로
 @Log4j
 public class ReplyController {
 	
 	@Autowired
 	ReplyService service;
 	
+	@PostMapping("/reply/update")
+	public Map<String, String> update(@RequestBody ReplyVo vo) {//json파일을 ReplyVo로 넣어줌
+		log.info("update");
+		int res = service.update(vo);
+		
+		Map<String, String> map = new HashMap<String, String>();
+
+		if(res>0)
+			map.put("result", "success");
+		else
+			map.put("result", "fail");
+		
+		return map;
+		
+	}
+	
+	@GetMapping("/reply/delete/{rno}")
+	public Map<String, String> delete(@PathVariable("rno") int rno) {//넘어온값을 변수로
+		int res = service.delete(rno);
+		
+		Map<String, String> map = new HashMap<String, String>();
+
+		if(res>0)
+			map.put("result", "success");
+		else
+			map.put("result", "fail");
+		
+		return map;
+	}
+	
+	//리플 상세정보
 	//레스트 방식은 정보를 받음
 	@GetMapping("/reply/get/{rno}")
 	public ReplyVo get(@PathVariable("rno") int rno) {
@@ -29,14 +62,30 @@ public class ReplyController {
 		return vo;
 	}
 	
-	@GetMapping("/reply/list/{bno}")
-	public List<ReplyVo> getList(@PathVariable("bno") int bno) {
+	//리플 리스트
+	@GetMapping("/reply/list/{bno}/{pageNo}")
+	public Map<String, Object> getList(@PathVariable("bno") int bno
+			, @PathVariable("pageNo") int pageNo) {
+		
+		Criteria cri = new Criteria(pageNo,10);
+		
+		//페이징처리
+		PageNavi pageNavi = new PageNavi(cri, service.getTotal(bno));
+		
+		//리스트조회
 		List<ReplyVo> list = service.getList(bno);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("pageNavi", pageNavi);
+		map.put("list", list);
+		
 		log.info("=================="+list);
 		//1.로그찍고 2.쿼리확인 3.쿼리를 디벨로퍼에서 실행
-		return list;
+		return map;
 	}
 	
+	//리플 삽입
 	//맵방식으로 리턴하여 보냄
 	@PostMapping("/reply/insert")
 	public Map<String, Object> insert(@RequestBody ReplyVo vo) {

@@ -22,6 +22,11 @@ public class ReplyTest {
 	@Autowired
 	ReplyService service;
 	
+	@Test
+	public void getTotalTest() {
+		int res = mapper.getTotal(2);
+		log.info(res);
+	}
 	
 	@Test
 	public void test1() {
