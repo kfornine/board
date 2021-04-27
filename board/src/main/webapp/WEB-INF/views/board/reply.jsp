@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="/resources/header/header.jsp"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script src="/resources/js/reply.js" type="text/javascript"></script>
@@ -14,6 +13,8 @@ function(){
 	
 	//addReplyBtn을 클릭하면 모델창을 보여줌
 	$("#addReplyBtn").on("click",function(){
+		$("#modifyBtn").hide();
+		$("#removeBtn").hide();
 		$("#replyInsertBtn").show();
 		$("#reply").val("");
 		$("#replyer").val("");
@@ -40,6 +41,7 @@ function(){
 		
 		//리스트 조회하기(콜백 후에(비동기시라서))
 	});
+	//실질적으로 리스트를 조회해서 화면에 뿌려준다
 	getAjaxList()});
 /*
  * 리플 상세화면을 보여준다
@@ -48,12 +50,15 @@ function replyDetail(rno){
 	$("#rno").val(rno);
 	//버튼 숨김 처리
 	$("#replyInsertBtn").hide();
+	$("#modifyBtn").show();
+	$("#removeBtn").show();
 	//모달창 보여주기
 	$("#myModal").modal("show");
 	//상세내용조회
 	getAjax(); //ajax실행
 }
 
+//리플 페이지 생성
 function replyPage(pageNavi){
 	
 	var startPage = pageNavi.startPage;
@@ -67,32 +72,50 @@ function replyPage(pageNavi){
 	//이전  페이지네비게이션으로 이동
 	if(pageNavi.prev){
 		pageContent +=
-			'<li class="page-item disabled">'
+			'<li class="page-item" onClick=pageMove('+ (startPage-1) +')>'
 		   +'<a class="page-link" href="#" tabindex="-1">Previous</a>'
 		   +'</li>';
 	}
 	
+	//페이지 번호 생성
 	for(startPage; startPage<endPage; startPage++){
-		pageContent += '<li class="page-item"><a class="page-link" href="#">'+startPage+'</a></li>'
-	}
-	//다음 페이지네비게이션으로 이동
-	if(pageNavi.next){
+		// 지금 보여주려고 하는 번호 = startPage
+		// pageNavi.cri.pageNo
+		if(startPage != pageNavi.cri.pageNo){ //페이지번호가 아닌것은 민무늬
+			pageContent += '<li onClick=pageMove('+ startPage +') class="page-item"><a class="page-link" href="#">'+startPage+'</a></li>';
+		}else{ //페이지번호인것은 선택
+			pageContent += '<li class="page-item active">'
+		   + '<a class="page-link" href="#">'+ startPage +' <span class="sr-only">(current)</span></a>'
+		   + '</li>';
+		}
 		
 	}
+	
+	//다음 페이지네비게이션으로 이동
+	if(pageNavi.next){
+		pageContent += 
+			'<li class="page-item" onClick=pageMove('+ (endPage+1) +')>'
+	      +'<a class="page-link" href="#">Next</a>'
+	      +'</li>';
+	}
+	
 	$(".pagination").html(pageContent);
 }
-	
+
+/*
+ *  페이지 번호를 매개변수로 받아서
+ * 	해당페이지리스트를 서버로부터 받아와서 화면에 뿌림
+ */
+function pageMove(pageNo){ //매개변수를 id가 pageNo에 입력
+	$("#replyPageNo").val(pageNo);
+	getAjaxList();
+}
 
 
 </script>
 
 
 
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Tables</h1>
-                </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
@@ -145,10 +168,10 @@ function replyPage(pageNavi){
 									</nav>
 								
 								</div>
-							
-							bno<input type="text" value="2" id="bno" ><br>
-							rno<input type="text" id="rno"><br>
-							pageNo<input type="text" id="pageNo" value="1">
+							<!-- 리스트 호출시 bno와 pageNo 값을 가지고감 -->
+							<input type="hidden" value="${vo.bno}" id="bno" ><br>
+							<input type="hidden" id="rno"><br>
+							<input type="hidden" id="replyPageNo" value="1">
 									</div>
 							  </div>
 							  <!-- ./ end row -->
@@ -166,8 +189,6 @@ function replyPage(pageNavi){
                 <!-- /.col-lg-12 -->
             </div>
             
-        </div>
-        <!-- /#page-wrapper -->
 			
 			
 			
@@ -202,8 +223,8 @@ function replyPage(pageNavi){
         </div>
         <!-- /.modal -->
                 
+<jsp:include page="/resources/header/bottom.jsp"/>
 
         
-<jsp:include page="/resources/header/bottom.jsp"/>
 
 

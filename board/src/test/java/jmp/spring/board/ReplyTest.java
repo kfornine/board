@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import jmp.spring.mapper.ReplyMapper;
 import jmp.spring.service.ReplyService;
+import jmp.spring.vo.Criteria;
 import jmp.spring.vo.ReplyVo;
 import lombok.extern.log4j.Log4j;
 
@@ -36,7 +37,10 @@ public class ReplyTest {
 	
 	@Test
 	public void test2() {
-		log.info(service.getList(1));
+		Criteria cri = new Criteria();
+		cri.setPageNo(1);
+		cri.setAmount(10);
+		log.info(service.getList(2, cri));
 		
 	}
 	

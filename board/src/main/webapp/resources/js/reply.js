@@ -71,7 +71,7 @@ function deleteAjax(){
 function getAjaxList(){
 	
 	$.ajax({
-		url : '/reply/list/' + $("#bno").val()+'/'+$("#pageNo").val(),
+		url : '/reply/list/' + $("#bno").val()+'/'+$("#replyPageNo").val(), //input에 id를 가져옴
 		method : 'get',
 		dataType : 'json', //내가받을형식
 		success : function(data, status, xhr){
@@ -153,6 +153,7 @@ function AjaxInsert(){
 				//모달창 닫기
 				$("#myModal").modal("hide");
 				//리스트조회하기
+				$("#replyPageNo").val("1");
 				getAjaxList();
 			}else{
 				alert("입력중 오류가 발생했습니다");

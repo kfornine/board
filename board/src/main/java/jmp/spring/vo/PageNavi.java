@@ -4,9 +4,10 @@ import lombok.Data;
 
 @Data
 public class PageNavi {
-
+	//시작번호 끝번호
 	int startPage;
 	int endPage;
+	//다음페이지 이전페이지 여부
 	boolean prev;
 	boolean next;
 	

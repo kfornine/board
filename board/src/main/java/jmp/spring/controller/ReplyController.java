@@ -73,7 +73,7 @@ public class ReplyController {
 		PageNavi pageNavi = new PageNavi(cri, service.getTotal(bno));
 		
 		//리스트조회
-		List<ReplyVo> list = service.getList(bno);
+		List<ReplyVo> list = service.getList(bno, cri);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		

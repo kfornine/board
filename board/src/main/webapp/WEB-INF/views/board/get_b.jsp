@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <jsp:include page="/resources/header/header.jsp"/>
 
 <script type="text/javascript">
+
 if('${resMsg }' != ""){
 	alert('${resMsg }');
 }
@@ -59,7 +61,11 @@ function detailBtn(url) {
 									<input type="hidden" name="pageNo" value="${criteria.pageNo}">
 									<input type="hidden" name="type" value="${criteria.type}">
 									<input type="hidden" name="keyword" value="${criteria.keyword}">
-								</form>	
+								</form>
+								
+								    <!-- 댓글  -->
+									<jsp:include page="reply.jsp"/>
+								
 								
                         </div>
                         <!-- /.panel-body -->
@@ -71,4 +77,4 @@ function detailBtn(url) {
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
-<jsp:include page="/resources/header/bottom.jsp"/>
+
