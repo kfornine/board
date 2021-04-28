@@ -75,7 +75,7 @@ function getAjaxList(){
 		method : 'get',
 		dataType : 'json', //내가받을형식
 		success : function(data, status, xhr){
-			console.log("data",data);
+			console.log("실행결과",data);
 			//debugger;
 			var htmlContent="";
 			
@@ -90,7 +90,6 @@ function getAjaxList(){
 				$(".chat").html(htmlContent); //엘리먼츠의 내용을 바꿔줌
 				
 			}else{
-				
 				$.each(data.list,function(index, item){ //item이름으로 정보 뺴오기, map에서 data.list사용
 					htmlContent += 
 						"<li onclick=replyDetail('"+ item.rno +"') class='left clearfix' data-rno=''>"

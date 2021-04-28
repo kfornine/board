@@ -146,14 +146,7 @@ function pageMove(pageNo){ //매개변수를 id가 pageNo에 입력
 							      <div class="panel-body">        
 							      
 							        <ul class="chat">
-										<li class='left clearfix' data-rno='"+list.rno+"'>
-										<div>
-											<div class='header'><strong class='primary-font'>[1] 홍길동</strong> 
-				    							<small class='pull-right text-muted'>12:00:00</small>
-				    						</div>
-				     						<p>수고가 많으십니다!</p>
-				     					</div>
-				     					</li>
+							        
 							        </ul>
 							        <!-- ./ end ul -->
 							      </div>
