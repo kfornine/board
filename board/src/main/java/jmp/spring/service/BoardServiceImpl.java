@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jmp.spring.mapper.BoardMapper;
 import jmp.spring.vo.BoardVo;
@@ -33,7 +34,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional //거래설정 에러발생시 롤백
 	public int update(BoardVo vo) {
+		
+		//게시글이 수정시 백업테이블에 저장 해줍니다
+		mapper.boardBackup(vo.getBno());
+		
 		return mapper.update(vo);
 				
 	}

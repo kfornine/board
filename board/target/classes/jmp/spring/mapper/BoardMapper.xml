@@ -67,7 +67,7 @@
 			select seq_tbl_board.nextval from dual
  		</selectKey><!-- bno값 설정 -->
  		insert into tbl_board (bno, title, content, writer, regdate)
-values (#{bno}, '${title}', #{content}, #{writer}, sysdate)
+		values (#{bno}, '${title}', #{content}, #{writer}, sysdate)
  		
  	</insert>
  	
@@ -76,5 +76,11 @@ values (#{bno}, '${title}', #{content}, #{writer}, sysdate)
  		DELETE FROM tbl_board WHERE bno=#{bno}
  		
  	</delete>
+ 	
+ 	<insert id="boardBackup">
+	 	INSERT INTO tbl_board_bk
+		(SELECT seq_board_bk.NEXTVAL, bno, title, content, writer, regdate, updatedate, sysdate
+	    FROM tbl_board WHERE bno = #{bno})
+ 	</insert>
  	
 </mapper>

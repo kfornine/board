@@ -16,5 +16,7 @@ public interface ReplyMapper {
 	public List<ReplyVo> getList(@Param("bno") int bno,
 								 @Param("cri") Criteria cri);//파람이 여러개일경우 이름을 넣어줌
 	public int getTotal(int bno);
+	//리플 업데이트
+	public int updateReplyCnt(int bno);
 
 }

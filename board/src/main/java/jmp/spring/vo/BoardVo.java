@@ -11,5 +11,6 @@ public class BoardVo {
 	String writer; //작성자
 	String regdate; //작성일
 	String updatedate; //수정일
+	String replycnt; //리플 수
 
 }

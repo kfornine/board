@@ -5,6 +5,11 @@
   
 <mapper namespace="jmp.spring.mapper.ReplyMapper">
  	
+ 	<update id="updateReplyCnt">
+ 		update tbl_board set replycnt = (select count(*) from tbl_reply where bno=#{bno})
+		where bno=#{bno}
+ 	</update>
+ 	
  	<insert id="insert">
  		insert into tbl_reply values
 		(seq_reply.nextval, #{bno}, #{reply}, #{replyer}, sysdate, sysdate)
