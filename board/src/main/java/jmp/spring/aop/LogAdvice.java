@@ -13,17 +13,17 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class LogAdvice {
 	
-	@Before("execution(* jmp.spring.service.BoardService.*(..))")
-	public void logBefore() {
-		log.info("AOP=====================");
-	}
+//	@Before("execution(* jmp.spring.service.BoardService.*(..))")
+//	public void logBefore() {
+//		log.info("AOP=====================");
+//	}
 	
 	@Around("execution(* jmp.spring.service.*.*(..))")
 	public Object logTime(ProceedingJoinPoint pjp) {
 		//@before
 		//메서드 실행전 시간
-		long startTime = System.currentTimeMillis();
 		Object res = null;
+		long startTime = System.currentTimeMillis();
 		try {
 			res = pjp.proceed();
 		} catch (Throwable e) {
