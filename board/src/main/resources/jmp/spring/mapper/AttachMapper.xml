@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- 중요! 맵퍼저장소를 일치시켜야함   -->
+<mapper namespace="jmp.spring.mapper.AttachMapper">
+ 
+ 
+ 	<select id="getSeq" resultType="int">
+ 	
+ 	select SEQ_ATTACH.nextval from dual
+ 	
+ 	</select>
+ 
+ 	<insert id="insert">
+ 	
+	insert into tbl_attach values 
+	(#{attachNo}, #{uuid}, #{uploadPath}, #{fileName}, #{fileType}, sysdate)
+ 	
+ 	</insert>
+ 
+ 	<select id="getList" resultType="jmp.spring.vo.AttachFileVo">
+ 	
+ 	select attachNo, uuid, uploadPath, fileName, fileType
+		--uploadpath : 년/월/일 경로
+		--uuid_fileName : 저장된 파일 이름 , || = +
+		--s_uuid_fileName : 썸네일이 저장된 파일 이름
+		,uploadpath || uuid || '_' || fileName as savePath
+		,uploadpath || 's_' || uuid || '_' || fileName as s_savePath
+	from tbl_attach
+	where attachNo = #{attachNo}
+	
+ 	</select>
+ 	
+</mapper>

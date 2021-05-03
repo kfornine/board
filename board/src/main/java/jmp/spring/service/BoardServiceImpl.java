@@ -18,6 +18,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardVo> getList(Criteria cri) {
 		// TODO Auto-generated method stub
+		
 		return mapper.getList(cri);
 	}
 
@@ -41,7 +42,6 @@ public class BoardServiceImpl implements BoardService {
 		mapper.boardBackup(vo.getBno());
 		
 		return mapper.update(vo);
-				
 	}
 
 	@Override

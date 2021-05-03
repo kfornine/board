@@ -14,17 +14,18 @@
 		$("#uploadBtn").on("click",function(){
 			//formData 생성
 			var formData = new FormData(document.uploadForm);
-			console.log(formData.get("uploadFile"));
+			console.log(formData.get("attachNo"));
 			
 			$.ajax({
 				url: '/fileUploadAjax',
 				method:'post',
+				dataType : 'json',
 				//processData속성과 contentType속성은
 				processData:false,
 				contentType:false,
 				data:formData,
-				success:function(){
-					console.log("success");
+				success:function(result){
+					console.log("callback result : ",result);
 				},
 				error:function(){
 					console.log("error");
@@ -36,8 +37,10 @@
 </head>
 <body>
 
-<form action="/uploadFormAction" method="post" enctype="multipart/form-data" name="uploadForm">
+<form action="/uploadFormAction" method="post" 
+	enctype="multipart/form-data" name="uploadForm">
 
+attachNo<input type="text" name="attachNo" value="0">
 <input type="file" name="uploadFile" multiple>
 <button type="button" id="uploadBtn">전송</button>
 
