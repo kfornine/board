@@ -5,10 +5,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,19 +31,62 @@ import net.coobird.thumbnailator.Thumbnails;
 public class fileUploadAjaxController {
 
 	//기본 경로
-	private static final String ROOT_DIR = "C:\\upload\\";
+	//private static final String ROOT_DIR = "C:\\upload\\";
+	private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
 	
 	@Autowired
 	AttachService service;
 	
+
+	/*
+	 * 이미지 파일의 경로를 조회하여
+	 * 이미지 파일 반환 합니다
+	 * @param fileName
+	 * 
+	 */
+	@GetMapping("/display")
+	public ResponseEntity<byte[]> display(String fileName) {
+		log.info(fileName);
+		File file = new File(ROOT_DIR+fileName);
+		HttpHeaders headers = new HttpHeaders();
+		
+		if(file.exists()) {
+			try {
+				headers.add("Content-Type", Files.probeContentType(file.toPath()));
+				
+				return new ResponseEntity<byte[]>(
+						FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
+				
+			} catch (IOException e) {
+				return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+				// TODO Auto-generated catch block
+			}
+		}else {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	/*
+	 * 파일리스트를 조회합니다
+	 * @return List<AttachFileVo>
+	 * 
+	 */
+	@GetMapping("/getFileList/{attachNo}")
+	public List<AttachFileVo> getList(@PathVariable("attachNo") int attachNo){
+		return service.getList(attachNo);
+	}
+	
 	@PostMapping("/fileUploadAjax")
-	public List<AttachFileVo> fileUpload(MultipartFile[] uploadFile, int attachNo) {
+	public Map<String, String> fileUpload(MultipartFile[] uploadFile, int attachNo) {
+		
+		Map<String, String> map = new HashMap<String, String>();
 		
 		//신규 생성된 파일일 경우 첨부번호 생성
 		if(attachNo==0) {
 			attachNo = service.getSeq();
 		}
 		
+		int res = 0;
 
 		for(MultipartFile multipartFile : uploadFile) {
 			
@@ -65,13 +116,16 @@ public class fileUploadAjaxController {
 				
 				//파일정보를 db에 저장
 				AttachFileVo vo = new AttachFileVo();
+				//AttachFileVo vo = new AttachFileVo(attachNo, getFolder(), multipartFile.getOriginalFilename());
 				vo.setUuid(uuid.toString());
 				vo.setAttachNo(attachNo);
 				vo.setFileName(multipartFile.getOriginalFilename());
 				vo.setFileType(contentType.startsWith("image")?"Y":"N");
 				vo.setUploadPath(uploadPath);
 				
-				service.insert(vo);
+				if(service.insert(vo)>0) {
+					res++;
+				}
 				
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
@@ -88,8 +142,11 @@ public class fileUploadAjaxController {
 			
 		}
 		//화면에 뿌리기
-		List<AttachFileVo> list = service.getList(attachNo);
-		return list;
+		//List<AttachFileVo> list = service.getList(attachNo);
+
+		map.put("attachNo", attachNo+"");
+		map.put("result", res+"건 생성");
+		return map;
 		
 	}
 	private String getFolder() {
@@ -107,8 +164,7 @@ public class fileUploadAjaxController {
 		}
 		
 		return uploadPath;
-	}
+	}//getFolder
 
-	
 }
 
