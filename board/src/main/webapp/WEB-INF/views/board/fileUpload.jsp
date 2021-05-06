@@ -50,17 +50,51 @@
 			method : 'get',
 			dataType : 'json',
 			
-			success :function(result){
-				//result : List<attachFileVo>
+			success :function(result2){
+				//result2 : List<attachFileVo>
 				var htmlContent = "";
-				$.each(result, function(index, vo){
-					htmlContent += "<li>" + vo.fileName + "</li>";
+				$.each(result2, function(index, vo){
+					//encodeURIComponent(문자열)
+					//savePath = 
+					var s_savePath = encodeURIComponent(vo.s_savePath);
+					var savePath = encodeURIComponent(vo.savePath);
+					console.log("인코딩전",vo.savePath);
+					console.log("인코딩후",savePath);
+					//만약에 이미지이면 이미지를 보여주고
+					if(vo.fileType == "Y"){
+						htmlContent += "<li><a href=/download?fileName="+savePath+">" 
+									+ "<img src=/display?fileName="+s_savePath+">" 
+									+ vo.fileName + "</a>"
+									+ "<span onClick = attachFileDelete('"+vo.uuid+"', '"+vo.attachNo+"') data-type='image'> x </span>"
+									+ "</li>";
+					}else{
+					//이미지가 아니면 파일 이름을 출력
+						htmlContent += "<li><a href=/download?fileName=" + savePath + ">" + vo.fileName + "</a>"
+								+"<span onClick = attachFileDelete('"+vo.uuid+"', '"+vo.attachNo+"') data-type='image'> x </span>"		
+								+"</li>";
+					}
 				});
 				$("#fileListView").html(htmlContent);
-				console.log("result",result);
+				console.log("result결과",result2);
 			}
 			
 		});
+	}
+	//파일 삭제
+	function attachFileDelete(uuid, attachNo){
+		console.log("func",attachFileDelete);
+		$.ajax({
+			url:'/attachFileDelete/'+uuid+'/'+attachNo,
+			method:'get',
+			
+			success:function(res){
+				console.log("Res",res);
+			},
+			error:function(){
+				console.log("error");
+			}
+		});
+		console.log("끝");
 	}
 </script>
 </head>

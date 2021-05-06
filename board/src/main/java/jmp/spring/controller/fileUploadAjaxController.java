@@ -2,6 +2,7 @@ package jmp.spring.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +33,72 @@ import net.coobird.thumbnailator.Thumbnails;
 public class fileUploadAjaxController {
 
 	//기본 경로
-	//private static final String ROOT_DIR = "C:\\upload\\";
-	private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
+	private static final String ROOT_DIR = "C:\\upload\\";
+	//private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
 	
 	@Autowired
 	AttachService service;
+	
+	@GetMapping("/attachFileDelete/{uuid}/{attachNo}")
+	public String deletee(@PathVariable("uuid") String uuid,
+						@PathVariable("attachNo") int attachNo) {
+		log.info("uuid : " + uuid);
+		log.info("attachNo : " + attachNo);
+		//uuid, attachNO
+		AttachFileVo vo = service.get(uuid, attachNo);
+		log.info("Vo : " + vo);
+		//서버에 저장된 파일을 삭제합니다
+		File file = new File(ROOT_DIR+vo.getSavePath());
+		//파일이있으면 지움
+		if(file.exists()) {
+			file.delete();
+		}
+		//만약에 이미지이면
+		//서버에 저장된 이미지 파일의 썸내일도 삭제
+		if(vo.getFileType() == "Y") {
+			File sFile = new File(ROOT_DIR+vo.getS_savePath());
+			//파일이있으면 지움
+			if(sFile.exists()) {
+				sFile.delete();
+			}
+		}
+		int res = service.delete(uuid, attachNo);
+		return res>0?"success":"fail";
+	}
+	
+	@GetMapping("/download")
+	public ResponseEntity<byte[]> download(String fileName) {
+		log.info("/display==================== fileName: " + fileName);
+		
+		// file 경로 2021/05/05/파일이름
+		// urlPath + uuid + _ + 파일이름 = savePath
+		File file = new File (ROOT_DIR + fileName);
+		if(file.exists()) {
+			try {
+				//파일을 ResponseEntity에 담아서 반환
+				HttpHeaders headers = new HttpHeaders();
+				headers.add("Content-type", MediaType.APPLICATION_STREAM_JSON_VALUE);
+				headers.add("Content-Disposition", "attachment;filename=\"" 
+													+ new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");
+				return new ResponseEntity<>(
+						FileCopyUtils.copyToByteArray(file), 
+						headers, HttpStatus.OK);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+			}
+			
+		}else {
+			//파일 업음 처리
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			
+		}
+	}
 	
 
 	/*
@@ -46,14 +109,17 @@ public class fileUploadAjaxController {
 	 */
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> display(String fileName) {
-		log.info(fileName);
+		log.info("/display++++++++++++++++++++++++++++++fileName"+fileName);
+		// /display?fileName=다운로드.jpg
 		File file = new File(ROOT_DIR+fileName);
-		HttpHeaders headers = new HttpHeaders();
 		
+		//파일 있는지 확인 exists=존재(T/F)
 		if(file.exists()) {
 			try {
+				HttpHeaders headers = new HttpHeaders();
 				headers.add("Content-Type", Files.probeContentType(file.toPath()));
 				
+				//responseEntity객체에 파일과 헤더를 담아서 브라우져로 리턴
 				return new ResponseEntity<byte[]>(
 						FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
 				
@@ -108,24 +174,26 @@ public class fileUploadAjaxController {
 				//마임타입을 확인하지 못하면 null을 반환합니다
 				String contentType = Files.probeContentType(saveFile.toPath());
 				
-				if(contentType.startsWith("image")) {
+				if(contentType != null && 
+						contentType.startsWith("image")) {
 					String thumbnail =ROOT_DIR+ uploadPath+"s_"+uploadFileName;
 					//썸네일 이미지 생성
 					Thumbnails.of(saveFile).size(100, 100).toFile(thumbnail);
+					
+					//파일정보를 db에 저장
+					AttachFileVo vo = new AttachFileVo();
+					//AttachFileVo vo = new AttachFileVo(attachNo, getFolder(), multipartFile.getOriginalFilename());
+					vo.setUuid(uuid.toString());
+					vo.setAttachNo(attachNo);
+					vo.setFileName(multipartFile.getOriginalFilename());
+					vo.setFileType(contentType.startsWith("image")?"Y":"N");
+					vo.setUploadPath(uploadPath);
+					
+					if(service.insert(vo)>0) {
+						res++;
+					}
 				}
 				
-				//파일정보를 db에 저장
-				AttachFileVo vo = new AttachFileVo();
-				//AttachFileVo vo = new AttachFileVo(attachNo, getFolder(), multipartFile.getOriginalFilename());
-				vo.setUuid(uuid.toString());
-				vo.setAttachNo(attachNo);
-				vo.setFileName(multipartFile.getOriginalFilename());
-				vo.setFileType(contentType.startsWith("image")?"Y":"N");
-				vo.setUploadPath(uploadPath);
-				
-				if(service.insert(vo)>0) {
-					res++;
-				}
 				
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block

@@ -33,4 +33,23 @@
 	
  	</select>
  	
+ 	<delete id="delete">
+ 	
+ 	delete tbl_attach where attachNo=#{attachNo} and uuid=#{uuid}
+ 	
+ 	</delete>
+ 	
+ 	<select id="get" resultType="jmp.spring.vo.AttachFileVo">
+ 	
+ 	select attachNo, uuid, uploadPath, fileName, fileType
+		--uploadpath : 년/월/일 경로
+		--uuid_fileName : 저장된 파일 이름 , || = +
+		--s_uuid_fileName : 썸네일이 저장된 파일 이름
+		,uploadpath || uuid || '_' || fileName as savePath
+		,uploadpath || 's_' || uuid || '_' || fileName as s_savePath
+	from tbl_attach
+	where attachNo = #{attachNo} and uuid = #{uuid}
+	
+ 	</select>
+ 	
 </mapper>

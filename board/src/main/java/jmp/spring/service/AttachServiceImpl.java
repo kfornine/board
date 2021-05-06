@@ -31,6 +31,18 @@ public class AttachServiceImpl implements AttachService {
 		// TODO Auto-generated method stub
 		return mapper.getList(attachNo);
 	}
+
+	@Override
+	public int delete(String uuid, int attachNo) {
+		// TODO Auto-generated method stub
+		return mapper.delete(uuid, attachNo);
+	}
+
+	@Override
+	public AttachFileVo get(String uuid, int attachNo) {
+		// TODO Auto-generated method stub
+		return mapper.get(uuid, attachNo);
+	}
 	
 
 }
