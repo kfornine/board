@@ -10,6 +10,8 @@ GRANT CREATE TABLE, RESOURCE TO spring;
 SELECT * FROM v$resource_limit WHERE resource_name IN ('processes','sessions');
 
 ALTER SYSTEM SET processes = 200 scope=spfile;
+
+delete tbl_attach where attachNo=1 and uuid='uuid';
 --그외, pk설정 외부키설정 컬럼생성
 -- 테이블명 : tbl_board
 

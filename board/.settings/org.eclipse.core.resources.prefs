@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/jmp/spring/controller=UTF-8
+encoding//src/main/resources/config.properties=UTF-8
 encoding//src/main/webapp/resources/header/list.jsp=UTF-8
 encoding//src/main/webapp/resources/header/list_b.jsp=UTF-8

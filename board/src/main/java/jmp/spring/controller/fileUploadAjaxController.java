@@ -33,11 +33,48 @@ import net.coobird.thumbnailator.Thumbnails;
 public class fileUploadAjaxController {
 
 	//기본 경로
-	private static final String ROOT_DIR = "C:\\upload\\";
-	//private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
+	//private static final String ROOT_DIR = "C:\\upload\\";
+	private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
 	
 	@Autowired
 	AttachService service;
+	
+	@GetMapping("/attachFileDelete2/{uuid}/{attachNo}")
+	public String deletee2(@PathVariable("uuid") String uuid,
+						 @PathVariable("aatachNo") int attachNo) {
+		
+		
+		AttachFileVo vo = service.get(uuid, attachNo);
+		File file = new File(ROOT_DIR + vo.getSavePath());
+		if(file.exists()) {
+			//파일 삭제
+			file.delete();
+		}
+		//db에서 삭제
+		int res = service.delete(uuid, attachNo);
+		return res > 0 ? "success" : "fail";
+	}
+	
+	@GetMapping("/download2")
+	public ResponseEntity<byte[]> download2(String fileName) throws IOException{
+		log.info(fileName);
+		//파일이 있는지 없는지 확인
+		File file = new File(fileName);
+		if(file.exists()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type",  MediaType.APPLICATION_OCTET_STREAM_VALUE);
+			
+			headers.add("Content-Disposition", "attachment; filename=\""
+					+ new String(fileName.getBytes("UTF-8"),"ISO-8859-1")
+					+"\"");
+			return new ResponseEntity<byte[]>(
+					FileCopyUtils.copyToByteArray(file)
+					, headers
+					, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	@GetMapping("/attachFileDelete/{uuid}/{attachNo}")
 	public String deletee(@PathVariable("uuid") String uuid,

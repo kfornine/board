@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/resources/header/header.jsp"/>
 
-<form action="/board/register" method="post">
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -11,14 +11,19 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+            
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
+                <form action="/board/register" method="post">
                     <div class="panel panel-default">
+                    
+                    
                         <div class="panel-heading">
                             DataTables Advanced Tables
                         </div>
                         <!-- /.panel-heading -->
+                        
                         <div class="panel-body">
                               <div class="form-group">
                                   <label>제목</label>
@@ -33,6 +38,8 @@
                                   <textarea name=writer class="form-control" rows="3">${vo.writer }</textarea>
                               </div>
                                	<button type="submit">등록</button>
+                               
+                               	</form>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -43,5 +50,7 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
-</form>
+
+
+
 <jsp:include page="/resources/header/bottom.jsp"/>

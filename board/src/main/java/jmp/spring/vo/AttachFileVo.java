@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class AttachFileVo {
 
-	//첨부파일 번호,중복방지,업로드경로,파일명,이미지구분(이미지면t아니면f)
+	//첨부파일 번호,중복방지,업로드경로,파일명,이미지구분(이미지면Y아니면N)
 	  private int attachNo;
 	  private String uuid;
 	  private String uploadPath;

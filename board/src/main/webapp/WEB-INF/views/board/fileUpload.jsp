@@ -38,9 +38,9 @@
 				error:function(){
 					console.log("error");
 				}
-			})
-		});
-	});
+			});//ajax
+		});//uploadbtn.on
+	});//document.ready
 	
 	
 	function getFileList(attachNo){
@@ -50,10 +50,10 @@
 			method : 'get',
 			dataType : 'json',
 			
-			success :function(result2){
+			success :function(result){
 				//result2 : List<attachFileVo>
 				var htmlContent = "";
-				$.each(result2, function(index, vo){
+				$.each(result, function(index, vo){
 					//encodeURIComponent(문자열)
 					//savePath = 
 					var s_savePath = encodeURIComponent(vo.s_savePath);
@@ -65,38 +65,81 @@
 						htmlContent += "<li><a href=/download?fileName="+savePath+">" 
 									+ "<img src=/display?fileName="+s_savePath+">" 
 									+ vo.fileName + "</a>"
-									+ "<span onClick = attachFileDelete('"+vo.uuid+"', '"+vo.attachNo+"') data-type='image'> x </span>"
+									+ "<span onClick = attachFileDelete2("+vo.uuid+", "+vo.attachNo+") data-type='image'> x </span>"
 									+ "</li>";
 					}else{
 					//이미지가 아니면 파일 이름을 출력
-						htmlContent += "<li><a href=/download?fileName=" + savePath + ">" + vo.fileName + "</a>"
-								+"<span onClick = attachFileDelete('"+vo.uuid+"', '"+vo.attachNo+"') data-type='image'> x </span>"		
-								+"</li>";
+						htmlContent += "<li><a href=/download?fileName=" + savePath + ">" 
+								    + vo.fileName + "</a></li>";
 					}
 				});
 				$("#fileListView").html(htmlContent);
-				console.log("result결과",result2);
+				console.log("result결과",result);
 			}
 			
-		});
+		});//ajax
 	}
 	//파일 삭제
 	function attachFileDelete(uuid, attachNo){
 		console.log("func",attachFileDelete);
 		$.ajax({
-			url:'/attachFileDelete/'+uuid+'/'+attachNo,
+			url : '/attachFileDelete2/'+uuid+'/'+attachNo,
 			method:'get',
 			
 			success:function(res){
 				console.log("Res",res);
+				//파일 저장후 리스트를 호출 합니다.
+				getFileList(attachNo);
 			},
 			error:function(){
 				console.log("error");
 			}
+		});//ajax
+	}
+	
+	function attachFileDelete2(uuid, attachNo){
+		console.log("func","attachFileDelete2");
+		console.log("uuid",uuid);
+		console.log("attachNo",attachNo);
+		
+		$.ajax({
+			url: 'attachFileDelete/'+uuid+'/'+attachNo,
+			method: 'get',
+			success: function(result){
+				console.log(result);
+				//파일 저장후 리스트를 호출 합니다.
+				getFileList(attachNo);
+			} ,
+			error: function(){
+				console.log("error");
+			} 
+			
 		});
-		console.log("끝");
 	}
 </script>
+<style>
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+}
+
+.uploadResult ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.uploadResult ul li {
+	list-style: none;
+	padding: 10px;
+}
+
+.uploadResult ul li img {
+	width: 100px;
+}
+</style>
+
 </head>
 <body>
 
@@ -108,7 +151,7 @@ attachNo<input type="text" name="attachNo" id="attachNo" value="0">
 <button type="button" id="uploadBtn">전송</button>
 
 <!-- 파일 리스트를 출력 합니다. -->
-<div>
+<div class="uploadResult">
 	<ul id="fileListView">
 		<li>fileName1</li>
 	</ul>
