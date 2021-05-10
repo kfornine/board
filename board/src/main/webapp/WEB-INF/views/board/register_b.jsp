@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<script>
+function regSubmit(){
+	document.regForm.submit();
+}
+</script>
+
+
 <jsp:include page="/resources/header/header.jsp"/>
 
 
@@ -15,7 +23,6 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                <form action="/board/register" method="post">
                     <div class="panel panel-default">
                     
                     
@@ -25,6 +32,8 @@
                         <!-- /.panel-heading -->
                         
                         <div class="panel-body">
+							<form action="/board/register" method="post" name="regForm">
+                        
                               <div class="form-group">
                                   <label>제목</label>
                                   <input name=title class="form-control" value="${vo.title }">
@@ -37,9 +46,11 @@
                                   <label>작성자</label>
                                   <textarea name=writer class="form-control" rows="3">${vo.writer }</textarea>
                               </div>
-                               	<button type="submit">등록</button>
-                               
-                               	</form>
+                               	<input type="text" name=attachNo>
+                               	
+                               	<button type="button" onclick="regSubmit()">등록</button>
+							</form>
+                        <jsp:include page="fileUpload.jsp"></jsp:include>
                         </div>
                         <!-- /.panel-body -->
                     </div>

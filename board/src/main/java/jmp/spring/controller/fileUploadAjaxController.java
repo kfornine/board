@@ -33,48 +33,11 @@ import net.coobird.thumbnailator.Thumbnails;
 public class fileUploadAjaxController {
 
 	//기본 경로
-	//private static final String ROOT_DIR = "C:\\upload\\";
-	private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
+	private static final String ROOT_DIR = "C:\\upload\\";
+	//private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
 	
 	@Autowired
 	AttachService service;
-	
-	@GetMapping("/attachFileDelete2/{uuid}/{attachNo}")
-	public String deletee2(@PathVariable("uuid") String uuid,
-						 @PathVariable("aatachNo") int attachNo) {
-		
-		
-		AttachFileVo vo = service.get(uuid, attachNo);
-		File file = new File(ROOT_DIR + vo.getSavePath());
-		if(file.exists()) {
-			//파일 삭제
-			file.delete();
-		}
-		//db에서 삭제
-		int res = service.delete(uuid, attachNo);
-		return res > 0 ? "success" : "fail";
-	}
-	
-	@GetMapping("/download2")
-	public ResponseEntity<byte[]> download2(String fileName) throws IOException{
-		log.info(fileName);
-		//파일이 있는지 없는지 확인
-		File file = new File(fileName);
-		if(file.exists()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Content-Type",  MediaType.APPLICATION_OCTET_STREAM_VALUE);
-			
-			headers.add("Content-Disposition", "attachment; filename=\""
-					+ new String(fileName.getBytes("UTF-8"),"ISO-8859-1")
-					+"\"");
-			return new ResponseEntity<byte[]>(
-					FileCopyUtils.copyToByteArray(file)
-					, headers
-					, HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
 	
 	@GetMapping("/attachFileDelete/{uuid}/{attachNo}")
 	public String deletee(@PathVariable("uuid") String uuid,
@@ -137,7 +100,6 @@ public class fileUploadAjaxController {
 		}
 	}
 	
-
 	/*
 	 * 이미지 파일의 경로를 조회하여
 	 * 이미지 파일 반환 합니다
@@ -168,7 +130,6 @@ public class fileUploadAjaxController {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
 	/*
 	 * 파일리스트를 조회합니다
 	 * @return List<AttachFileVo>
@@ -182,78 +143,166 @@ public class fileUploadAjaxController {
 	@PostMapping("/fileUploadAjax")
 	public Map<String, String> fileUpload(MultipartFile[] uploadFile, int attachNo) {
 		
-		Map<String, String> map = new HashMap<String, String>();
-		
-		//신규 생성된 파일일 경우 첨부번호 생성
+		// 신규 생성 이면 sequence값을 가져 옵니다.
 		if(attachNo==0) {
 			attachNo = service.getSeq();
 		}
 		
 		int res = 0;
-
-		for(MultipartFile multipartFile : uploadFile) {
+		for(MultipartFile file : uploadFile) {
 			
-			//중복 방지를 위해
-			//UUID 범용고유식별자 36개의 문자를 생성
-			UUID uuid = UUID.randomUUID();
-			
-			String uploadPath = getFolder();
-			
-			String uploadFileName = uuid.toString() + "_" 
-									+ multipartFile.getOriginalFilename();
-			
-			//파일생성
-			File saveFile = new File(ROOT_DIR+uploadPath+uploadFileName);
 			try {
-				//파일을 서버에 저장합니다.
-				multipartFile.transferTo(saveFile);
-				//확장자를 이용하여 MimeType을 결정합니다
-				//마임타입을 확인하지 못하면 null을 반환합니다
-				String contentType = Files.probeContentType(saveFile.toPath());
+				AttachFileVo vo = 
+						new AttachFileVo(   attachNo, 
+											getFolder(), // 업로드 경로 지정 ( 년\월\일 )
+											file.getOriginalFilename());
 				
-				if(contentType != null && 
-						contentType.startsWith("image")) {
-					String thumbnail =ROOT_DIR+ uploadPath+"s_"+uploadFileName;
-					//썸네일 이미지 생성
-					Thumbnails.of(saveFile).size(100, 100).toFile(thumbnail);
-					
-					//파일정보를 db에 저장
-					AttachFileVo vo = new AttachFileVo();
-					//AttachFileVo vo = new AttachFileVo(attachNo, getFolder(), multipartFile.getOriginalFilename());
-					vo.setUuid(uuid.toString());
-					vo.setAttachNo(attachNo);
-					vo.setFileName(multipartFile.getOriginalFilename());
-					vo.setFileType(contentType.startsWith("image")?"Y":"N");
-					vo.setUploadPath(uploadPath);
-					
-					if(service.insert(vo)>0) {
-						res++;
-					}
+				log.info("=======================" + vo);
+				// 파일을 서버에 저장 해봅시다
+				File saveFile = new File(ROOT_DIR+vo.getSavePath());
+				
+				// 서버에 파일을 생성 합니다.
+				file.transferTo(saveFile);
+				
+				// Mime 타입을 스트링으로 받아옵니다.
+				// Myme 타입을 모를경우 null을 반환 합니다. ex) xx.sql
+				String contentType = Files.probeContentType(saveFile.toPath());
+				log.info("==============contentType : "+contentType);
+				if(contentType != null 
+						&& contentType.startsWith("image")) {
+					Thumbnails.of(saveFile).size(100, 100).toFile(ROOT_DIR+vo.getS_savePath());
+					vo.setFileType("Y");
+				}
+
+				// 파일 정보를 DB에 저장 합니다.
+				if(service.insert(vo)>0) {
+					res++;
 				}
 				
-				
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (IllegalStateException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			log.info("======================="+multipartFile.getOriginalFilename());
-			log.info("======================="+multipartFile.getName());
-			log.info("======================="+multipartFile.getSize());
-			
-			
 		}
-		//화면에 뿌리기
-		//List<AttachFileVo> list = service.getList(attachNo);
-
-		map.put("attachNo", attachNo+"");
-		map.put("result", res+"건 생성");
-		return map;
 		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("attachNo", attachNo+"");
+		map.put("result", res+"건 저장 되었습니다.");
+		
+		return map;
 	}
+//	@GetMapping("/attachFileDelete2/{uuid}/{attachNo}")
+//	public String deletee2(@PathVariable("uuid") String uuid,
+//						 @PathVariable("aatachNo") int attachNo) {
+//		
+//		
+//		AttachFileVo vo = service.get(uuid, attachNo);
+//		File file = new File(ROOT_DIR + vo.getSavePath());
+//		if(file.exists()) {
+//			//파일 삭제
+//			file.delete();
+//		}
+//		//db에서 삭제
+//		int res = service.delete(uuid, attachNo);
+//		return res > 0 ? "success" : "fail";
+//	}
+//	
+//	@GetMapping("/download2")
+//	public ResponseEntity<byte[]> download2(String fileName) throws IOException{
+//		log.info(fileName);
+//		//파일이 있는지 없는지 확인
+//		File file = new File(fileName);
+//		if(file.exists()) {
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.add("Content-Type",  MediaType.APPLICATION_OCTET_STREAM_VALUE);
+//			
+//			headers.add("Content-Disposition", "attachment; filename=\""
+//					+ new String(fileName.getBytes("UTF-8"),"ISO-8859-1")
+//					+"\"");
+//			return new ResponseEntity<byte[]>(
+//					FileCopyUtils.copyToByteArray(file)
+//					, headers
+//					, HttpStatus.OK);
+//		}else {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//	}
+//	@PostMapping("/fileUploadAjax")
+//	public Map<String, String> fileUpload(MultipartFile[] uploadFile, int attachNo) {
+//		
+//		Map<String, String> map = new HashMap<String, String>();
+//		
+//		//신규 생성된 파일일 경우 첨부번호 생성
+//		if(attachNo==0) {
+//			attachNo = service.getSeq();
+//		}
+//		
+//		int res = 0;
+//
+//		for(MultipartFile multipartFile : uploadFile) {
+//			
+//			//중복 방지를 위해
+//			//UUID 범용고유식별자 36개의 문자를 생성
+//			UUID uuid = UUID.randomUUID();
+//			
+//			String uploadPath = getFolder();
+//			
+//			String uploadFileName = uuid.toString() + "_" 
+//									+ multipartFile.getOriginalFilename();
+//			
+//			//파일생성
+//			File saveFile = new File(ROOT_DIR+uploadPath+uploadFileName);
+//			try {
+//				//파일을 서버에 저장합니다.
+//				multipartFile.transferTo(saveFile);
+//				//확장자를 이용하여 MimeType을 결정합니다
+//				//마임타입을 확인하지 못하면 null을 반환합니다
+//				String contentType = Files.probeContentType(saveFile.toPath());
+//				
+//				if(contentType != null && 
+//						contentType.startsWith("image")) {
+//					String thumbnail =ROOT_DIR+ uploadPath+"s_"+uploadFileName;
+//					//썸네일 이미지 생성
+//					Thumbnails.of(saveFile).size(100, 100).toFile(thumbnail);
+//					
+//					//파일정보를 db에 저장
+//					AttachFileVo vo = new AttachFileVo();
+//					//AttachFileVo vo = new AttachFileVo(attachNo, getFolder(), multipartFile.getOriginalFilename());
+//					vo.setUuid(uuid.toString());
+//					vo.setAttachNo(attachNo);
+//					vo.setFileName(multipartFile.getOriginalFilename());
+//					vo.setFileType(contentType.startsWith("image")?"Y":"N");
+//					vo.setUploadPath(uploadPath);
+//					
+//					if(service.insert(vo)>0) {
+//						res++;
+//					}
+//				}
+//				
+//				
+//			} catch (IllegalStateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			log.info("======================="+multipartFile.getOriginalFilename());
+//			log.info("======================="+multipartFile.getName());
+//			log.info("======================="+multipartFile.getSize());
+//			
+//			
+//		}
+//		//화면에 뿌리기
+//		//List<AttachFileVo> list = service.getList(attachNo);
+//
+//		map.put("attachNo", attachNo+"");
+//		map.put("result", res+"건 생성");
+//		return map;
+//		
+//	}
 	private String getFolder() {
 		String uploadPath = "";
 		//오늘 날짜를 yyyy-mm-dd에 맞게 가져옴

@@ -27,16 +27,16 @@ public class AttachFileTest {
 		log.info("++++++++++++++++++++++++++++++++"+service.getSeq());
 	}
 	
-	@Test
-	public void insert() {
-		AttachFileVo vo = new AttachFileVo();
-		vo.setAttachNo(1);
-		vo.setFileName("ddd");
-		vo.setFileType("N");
-		vo.setUploadPath("up");
-		vo.setUuid("0001");
-		service.insert(vo);
-	}
+//	@Test
+//	public void insert() {
+//		AttachFileVo vo = new AttachFileVo();
+//		vo.setAttachNo(1);
+//		vo.setFileName("ddd");
+//		vo.setFileType("N");
+//		vo.setUploadPath("up");
+//		vo.setUuid("0001");
+//		service.insert(vo);
+//	}
 	
 	@Test
 	public void getlist() {

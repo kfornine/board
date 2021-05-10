@@ -26,10 +26,6 @@ public class SampleController {
 		return "/board/reply";
 	}
 	
-	@GetMapping("/board/RestTest")
-	public void restTest() {
-	}
-	
 	//리스트페이지
 	@GetMapping("/board/list")
 	public String getlist(Criteria cri, Model model) {
@@ -42,6 +38,10 @@ public class SampleController {
 		
 		return "/board/list_b";
 				
+	}
+	
+	@GetMapping("/board/RestTest")
+	public void restTest() {
 	}
 	
 	//등록페이지로 이동

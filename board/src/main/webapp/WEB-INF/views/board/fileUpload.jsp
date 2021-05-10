@@ -5,6 +5,28 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+}
+
+.uploadResult ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.uploadResult ul li {
+	list-style: none;
+	padding: 10px;
+}
+
+.uploadResult ul li img {
+	width: 100px;
+}
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	//화면이 준비되면 실행합니다
@@ -29,7 +51,11 @@
 				data:formData,
 				success:function(result){
 					console.log("callback result : ",result);
-					$("#attachNo").val(result.attachNo);
+					//name의 속성이 attachNo인 엘리먼트의 값을 모두 변경
+					//$("") -> 태그, $("#") -> 아이디, $(".") -> 클래스
+					//$("태그명[속성명=값]")
+					$("input[name=attachNo]").val(result.attachNo);
+					//$("#attachNo").val(result.attachNo); //첨푸파일 값 번호지정
 					$("#uploadFile").val("");
 					//document.uploadForm.uploadFile.value="";
 					//파일 저장후 리스트를 호출 합니다.
@@ -63,9 +89,9 @@
 					//만약에 이미지이면 이미지를 보여주고
 					if(vo.fileType == "Y"){
 						htmlContent += "<li><a href=/download?fileName="+savePath+">" 
-									+ "<img src=/display?fileName="+s_savePath+">" 
+									+ "<img src=/display?fileName="+s_savePath+">"
 									+ vo.fileName + "</a>"
-									+ "<span onClick = attachFileDelete2("+vo.uuid+", "+vo.attachNo+") data-type='image'> x </span>"
+									+ "<span onClick = attachFileDelete('"+vo.uuid+"','"+vo.attachNo+"') data-type='image'> x </span>"
 									+ "</li>";
 					}else{
 					//이미지가 아니면 파일 이름을 출력
@@ -74,7 +100,7 @@
 					}
 				});
 				$("#fileListView").html(htmlContent);
-				console.log("result결과",result);
+				console.log("result결과",result); //result[]배열
 			}
 			
 		});//ajax
@@ -83,11 +109,11 @@
 	function attachFileDelete(uuid, attachNo){
 		console.log("func",attachFileDelete);
 		$.ajax({
-			url : '/attachFileDelete2/'+uuid+'/'+attachNo,
+			url : '/attachFileDelete/'+uuid+'/'+attachNo,
 			method:'get',
 			
-			success:function(res){
-				console.log("Res",res);
+			success:function(result){
+				console.log("Res",result);
 				//파일 저장후 리스트를 호출 합니다.
 				getFileList(attachNo);
 			},
@@ -97,13 +123,13 @@
 		});//ajax
 	}
 	
-	function attachFileDelete2(uuid, attachNo){
+/* 	function attachFileDelete2(uuid, attachNo){
 		console.log("func","attachFileDelete2");
 		console.log("uuid",uuid);
 		console.log("attachNo",attachNo);
 		
 		$.ajax({
-			url: 'attachFileDelete/'+uuid+'/'+attachNo,
+			url: '/attachFileDelete/'+uuid+'/'+attachNo,
 			method: 'get',
 			success: function(result){
 				console.log(result);
@@ -115,30 +141,9 @@
 			} 
 			
 		});
-	}
+	} */
 </script>
-<style>
-.uploadResult {
-	width: 100%;
-	background-color: gray;
-}
 
-.uploadResult ul {
-	display: flex;
-	flex-flow: row;
-	justify-content: center;
-	align-items: center;
-}
-
-.uploadResult ul li {
-	list-style: none;
-	padding: 10px;
-}
-
-.uploadResult ul li img {
-	width: 100px;
-}
-</style>
 
 </head>
 <body>
@@ -146,9 +151,11 @@
 <form action="/uploadFormAction" method="post" 
 	enctype="multipart/form-data" name="uploadForm">
 
-attachNo<input type="text" name="attachNo" id="attachNo" value="0">
-<input type="file" name="uploadFile" multiple>
-<button type="button" id="uploadBtn">전송</button>
+<div id="fileInput">
+	attachNo<input type="text" name="attachNo" id="attachNo" value="0">
+	<input type="file" name="uploadFile" id="uploadFile" multiple>
+	<button type="button" id="uploadBtn">전송</button>
+</div>
 
 <!-- 파일 리스트를 출력 합니다. -->
 <div class="uploadResult">

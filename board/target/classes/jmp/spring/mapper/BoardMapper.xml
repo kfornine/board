@@ -66,8 +66,8 @@
  		<selectKey keyProperty="bno" order="BEFORE" resultType="int">
 			select seq_tbl_board.nextval from dual
  		</selectKey><!-- bno값 설정 -->
- 		insert into tbl_board (bno, title, content, writer, regdate)
-		values (#{bno}, '${title}', #{content}, #{writer}, sysdate)
+ 		insert into tbl_board (bno, title, content, writer, regdate, attachNo)
+		values (#{bno}, '${title}', #{content}, #{writer}, sysdate, #{attachNo})
  		
  	</insert>
  	

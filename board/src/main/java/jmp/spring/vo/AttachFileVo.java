@@ -16,24 +16,25 @@ public class AttachFileVo {
 	  private String fileType;
 	  private String regdate;
 	  
+	  //추가
+	  public AttachFileVo(int attachNo, String uploadPath, String fileName) {
+			
+			UUID uuid = UUID.randomUUID();
+			this.uuid=uuid.toString();
+			this.fileType = "N";
+			
+			this.attachNo = attachNo;
+			this.uploadPath = uploadPath;
+			this.fileName = fileName;
+			this.savePath = uploadPath + uuid + "_" + fileName;
+			this.s_savePath = uploadPath + "s_" + uuid + "_" + fileName;
 		//,썸네일전체경로,파일전체경로
+	  }
+	  
 	  private String savePath;
 	  private String s_savePath;
 	  
 	  
-	  
-//	  public AttachFileVo(int attachNo, String uploadPath, String fileName) {
-//		UUID uuid = UUID.randomUUID();
-//		this.attachNo = attachNo;
-//		this.uploadPath = uploadPath;
-//		this.fileName = fileName;
-//		this.savePath = uploadPath + uuid.toString() + "_" + fileName;
-//		this.s_savePath = uploadPath + "s_" + uuid.toString() + "_" + fileName;
-//		
-//	}
-
-
-
 
 	  
 }

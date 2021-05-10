@@ -13,4 +13,6 @@ public class BoardVo {
 	String updatedate; //수정일
 	String replycnt; //리플 수
 
+	//첨부파일번호 추가
+	String attachNo;
 }

@@ -18,7 +18,7 @@ public interface BoardMapper {
 	
 	public int insertBoard(BoardVo vo);
 	
-	public BoardVo get(int bno);
+	public BoardVo get(int bno);	//bno을 참조하여 BoardVo가져오기
 	
 	public int update(BoardVo vo);
 	

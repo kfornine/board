@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/resources/header/header.jsp"/>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 
 if('${resMsg }' != ""){
@@ -17,6 +17,15 @@ function detailBtn(url) {
 	
 	//console.log("log",detailBtn);
 }
+
+$(document).ready(function(){
+	if('${vo.attachNo}' != ''){ //첨부파일이있으면
+	getFileList('${vo.attachNo}');
+	$("input[name=attachNo]").val('${vo.attachNo}');
+	}
+	$("#fileInput").remove();
+	
+});
 </script>
 
         <div id="page-wrapper">
@@ -55,14 +64,15 @@ function detailBtn(url) {
                                	<button type="button" class="btn btn-default" onClick="detailBtn('/board/edit')"<%-- onClick="location.href='/board/edit?bno=${vo.bno }'" --%>>수정</button>
 								<button type="button" class="btn btn-default" onClick="detailBtn('/board/delete')">삭제</button>
 								<button type="button" class="btn btn-default" onClick="detailBtn('/board/list')">목록</button>
-								
+								<input readonly class="form-control" value="${vo.attachNo }">
 								<form method="get" name="detailForm">
 									<input type="hidden" name="bno" value="${vo.bno}">
 									<input type="hidden" name="pageNo" value="${criteria.pageNo}">
 									<input type="hidden" name="type" value="${criteria.type}">
 									<input type="hidden" name="keyword" value="${criteria.keyword}">
 								</form>
-								
+									<!-- 첨푸파일 -->
+									<jsp:include page="fileUpload.jsp"></jsp:include>
 								    <!-- 댓글  -->
 									<jsp:include page="reply.jsp"/>
 								
