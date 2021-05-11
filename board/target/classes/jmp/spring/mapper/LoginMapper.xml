@@ -5,22 +5,12 @@
 
 <mapper namespace="jmp.spring.mapper.LoginMapper">
 	
-	<select id="login" resultType="jmp.spring.user">
+	<select id="login" resultType="jmp.spring.vo.User">
 		select * from users where id=#{id} and pwd=#{pwd}
 	</select>
 
-	<insert id="">
+	<select id="userRole" resultType="String">
+		select role_id from users_role where id=#{id}
+	</select>
 	
-	</insert>
-
-	<update id="">
-	
-	</update>
-	
-	<delete id="">
-	
-	</delete>
-	
-
-
 </mapper>

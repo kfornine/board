@@ -6,6 +6,7 @@
 <!-- 중요! 맵퍼저장소를 일치시켜야함   -->
 <mapper namespace="jmp.spring.mapper.BoardMapper">
  
+<!-- select는 resultType필수  -->
  	<select id="getTime2" resultType="String">
  	
  		select sysdate from dual

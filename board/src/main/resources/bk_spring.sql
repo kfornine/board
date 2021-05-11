@@ -4,6 +4,8 @@
 
 select * from users where id='user01' and pwd='1234';
 ------------------------------------------------------1
+select role_id from users_role where id='user01';
+
 grant connect, resource to spring;
 
 GRANT CREATE SESSION TO spring;

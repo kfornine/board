@@ -21,6 +21,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- * multipartResolver클래스(빈) = 멀티업로드  -->
 	 <beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.support.StandardServletMultipartResolver"> 
  	 </beans:bean>
@@ -28,5 +29,15 @@
 	<context:component-scan base-package="jmp.spring.board" />
 	<context:component-scan base-package="jmp.spring.controller"/>
 	
+	<beans:bean id="sampleInterceptor" 
+		class="jmp.spring.interceptor.SampleInterceptor"></beans:bean>
+		
+	<interceptors>
+		<interceptor>
+			<mapping path="/board/list"/>
+			<beans:ref bean="sampleInterceptor"/>
+		</interceptor>
+	</interceptors>
+		
 
 </beans:beans>
