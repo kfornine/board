@@ -37,10 +37,10 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			alert('${msg}');
 			$("#errorMsgArea").text('${msg}');
 		});
 	</script>
+	
 </head>
 
 <body>

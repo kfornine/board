@@ -5,6 +5,18 @@
 select * from users where id='user01' and pwd='1234';
 ------------------------------------------------------1
 select role_id from users_role where id='user01';
+-------------------------------------------------------
+select * from users where sessionkey='C8D29AD8FA72BCE2791FDEFB984365CE' 
+                      and sessionlimit > sysdate;
+
+alter table users add sessionkey varchar(50);
+alter table users add sessionlimit date;
+update users set sessionkey='sessionkey'
+                ,sessionlimit = sysdate + 7
+where id = 'user01';
+
+
+
 
 grant connect, resource to spring;
 

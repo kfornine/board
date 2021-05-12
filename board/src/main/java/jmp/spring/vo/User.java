@@ -1,5 +1,6 @@
 package jmp.spring.vo;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -19,6 +20,10 @@ public class User {
 	
 	public List<String> userRole;// 권한 사용자의 권한을 조회 하여 입력 해주세요
 	
+	//자동로그인 필요한키값,유효기간
+	String sessionkey;
+	Date sessionlimit;
+	
 	/**
 	 * 권한이 있는지 체크 합니다.
 	 * 권한을 가지고 있는지 체크 합니다. 
@@ -26,8 +31,13 @@ public class User {
 	 * @return
 	 */
 	
+	//포함되어있으면 참 거짓
 	public boolean hasRole(String role_id){
-		return userRole.contains(role_id);
+		if(userRole != null) {
+			return userRole.contains(role_id);
+		}
+		
+		return false;
 	}
 
 	

@@ -17,7 +17,7 @@ public interface BoardMapper {
 	public List<BoardVo> getList(Criteria cri);
 	
 	public int insertBoard(BoardVo vo);
-	
+	// update, insert, delete = int
 	public BoardVo get(int bno);	//bno을 참조하여 BoardVo가져오기
 	
 	public int update(BoardVo vo);

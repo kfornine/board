@@ -29,7 +29,7 @@ public class SampleInterceptor extends HandlerInterceptorAdapter{
 		//로그인된 사용자만 이용 = 세션을 가지고 와서 유저 객체가 있는지 확인
 		//로그인이 안된 사용자는 로그인페이지로 돌려보냄
 		HttpSession session = request.getSession();
-		User user = (User)session.getAttribute("user_session");
+		User user = (User)session.getAttribute("user");
 		if(user == null) {
 			response.sendRedirect("/login");
 			return false;

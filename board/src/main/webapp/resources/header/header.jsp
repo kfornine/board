@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+test : ${sessionScope.user }
 <head>
 
     <meta charset="utf-8">
@@ -256,7 +257,24 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        
+                        <!--로그인한 사용자인 경우 로그아웃 처리 
+                        	로그인전 이면 로그인 처리-->
+                        	
+                        <c:choose>
+                        	<c:when test="${sessionScope.user.id != null }">
+        		                <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 
+        		                	Logout</a><!--세션에 유저가 있으면 -->
+        		                	
+                        	</c:when>
+                        	<c:otherwise>
+		                        <li><a href="/login"><i class="fa fa-sign-out fa-fw"></i> 
+		                        	login</a>
+                        	</c:otherwise>
+                        </c:choose>
+                        
+                       
+                       
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

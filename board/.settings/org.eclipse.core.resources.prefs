@@ -3,5 +3,6 @@ encoding//src/main/java/jmp/spring/controller=UTF-8
 encoding//src/main/resources/config.properties=UTF-8
 encoding//src/main/webapp/WEB-INF/views/login.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/loginProcess.jsp=UTF-8
+encoding//src/main/webapp/resources/header/header.jsp=UTF-8
 encoding//src/main/webapp/resources/header/list.jsp=UTF-8
 encoding//src/main/webapp/resources/header/list_b.jsp=UTF-8

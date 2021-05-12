@@ -23,6 +23,21 @@ public class LoginTest {
 	LoginService service;
 	
 	@Test
+	public void loginservie() {
+		System.out.println(mapper.loginSessionKey("C8D29AD8FA72BCE2791FDEFB984365CE"));
+	}
+	
+	
+	@Test
+	public void userUpdateSessionKey() {
+		User user = new User();
+		user.setSessionkey("user01_sessionkey");
+		user.setId("user01");
+		
+		System.out.println(mapper.updateSessionKey(user)); 
+	}
+	
+	@Test
 	public void userTest() {
 		User user = new User();
 		user.setId("user01");

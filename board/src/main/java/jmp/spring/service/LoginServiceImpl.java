@@ -27,23 +27,24 @@ public class LoginServiceImpl implements LoginService{
 		}
 		return loginUser;
 	}
-
+	
 	@Override
-	public int insert(User user) {
+	public int updateSessionKey(User user) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.updateSessionKey(user);
 	}
 
 	@Override
-	public int update(User user) {
+	public User loginSessionKey(String sessionkey) {
 		// TODO Auto-generated method stub
-		return 0;
+		User user = loginSessionKey(sessionkey);
+		List<String> role = mapper.userRole(user.getId());
+		user.setUserRole(role);
+		return user;
 	}
+	
 
-	@Override
-	public int delete(String id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
+
 
 }

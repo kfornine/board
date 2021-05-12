@@ -29,14 +29,31 @@
 	<context:component-scan base-package="jmp.spring.board" />
 	<context:component-scan base-package="jmp.spring.controller"/>
 	
-	<beans:bean id="sampleInterceptor" 
-		class="jmp.spring.interceptor.SampleInterceptor"></beans:bean>
+	<!-- <beans:bean id="sampleInterceptor" 
+		class="jmp.spring.interceptor.SampleInterceptor"></beans:bean> -->
+		
+	<beans:bean id="authInterceptor" class="jmp.spring.interceptor.AuthInterceptor"></beans:bean>	
+		
+
+	<!--LoginInterceptor를 Bean으로 등록 합니다.-->
+	<beans:bean id="loginInterceptor" class="jmp.spring.interceptor.LoginInterceptor"></beans:bean>
 		
 	<interceptors>
-		<interceptor>
+<!-- 	<interceptor>
 			<mapping path="/board/list"/>
 			<beans:ref bean="sampleInterceptor"/>
+		</interceptor> -->
+		
+		<interceptor>
+			<mapping path="/board/list"/>
+			<beans:ref bean="authInterceptor"/>
 		</interceptor>
+		
+		<interceptor>
+			<mapping path="/loginProcess"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		
 	</interceptors>
 		
 

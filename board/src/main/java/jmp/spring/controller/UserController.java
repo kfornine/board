@@ -1,6 +1,8 @@
 package jmp.spring.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.util.WebUtils;
 
 import jmp.spring.service.LoginService;
 import jmp.spring.vo.User;
@@ -26,8 +29,24 @@ public class UserController {
 		
 	}
 	
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		//자동로그인 쿠키를 제거 해줍시다
+		//로그아웃을 하게 되면 더이상 자동로그인을 할 수 없습니다
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		loginCookie.setMaxAge(0);
+		loginCookie.setPath("/");
+		
+		response.addCookie(loginCookie);
+		
+		return "/login";
+	}
+	
 	@PostMapping("/loginProcess") //폼 action경로
-	public String loginProcesss(User vo, Model model, HttpServletRequest req) {
+	public String loginProcesss(User vo, Model model, HttpServletRequest request) {
 		
 		User user = service.login(vo);
 		
@@ -37,8 +56,9 @@ public class UserController {
 			
 		}else {
 			// user 객체를 세션에 담아줌 - 로그인 처리
-			HttpSession session = req.getSession();
-			session.setAttribute("user_session", user);
+			HttpSession session = request.getSession();
+			session.setAttribute("user", user);
+			
 			log.info("\n\n\n\n\n\n"+user);
 			
 			
