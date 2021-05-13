@@ -37,10 +37,14 @@ public class UserController {
 		//자동로그인 쿠키를 제거 해줍시다
 		//로그아웃을 하게 되면 더이상 자동로그인을 할 수 없습니다
 		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-		loginCookie.setMaxAge(0);
-		loginCookie.setPath("/");
 		
-		response.addCookie(loginCookie);
+		//널처리 , 로그인 쿠키가 있을때만 처리(없으면 실행안하고 login불러옴)
+		if(loginCookie != null) {
+			loginCookie.setMaxAge(0);
+			loginCookie.setPath("/");
+			
+			response.addCookie(loginCookie);
+		}
 		
 		return "/login";
 	}
@@ -68,6 +72,13 @@ public class UserController {
 		
 	}
 	
-	
+	@GetMapping("/member")
+	public void member() {
+		
+	}
+	@PostMapping("")
+	public void registermember() {
+		
+	}
 	
 }

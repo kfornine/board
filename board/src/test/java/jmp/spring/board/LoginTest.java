@@ -22,6 +22,22 @@ public class LoginTest {
 	@Autowired
 	LoginService service;
 	
+	
+	@Test
+	public void userslogintet() {
+		User user = new User();
+		user.setId("1");
+		user.setPwd("2");
+		user.setEmail("3.@naver.com");
+		user.setName("33");
+		
+		mapper.insertUser(user);
+		String role = "ROLE_USER";
+		mapper.insertUserRole("22", role);
+		
+	}
+	
+	
 	@Test
 	public void loginservie() {
 		System.out.println(mapper.loginSessionKey("C8D29AD8FA72BCE2791FDEFB984365CE"));
@@ -31,7 +47,7 @@ public class LoginTest {
 	@Test
 	public void userUpdateSessionKey() {
 		User user = new User();
-		user.setSessionkey("user01_sessionkey");
+		user.setSessionkey("user01_sessionkey01");
 		user.setId("user01");
 		
 		System.out.println(mapper.updateSessionKey(user)); 

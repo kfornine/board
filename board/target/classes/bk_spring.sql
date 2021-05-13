@@ -1,6 +1,10 @@
 -- 테이블 생성,시퀀스,
 --리스트,인서트,업데이트,삭제,
 --페이징,
+		insert into users (id, pwd, enabled, name, email)
+			values (#{id}, #{pwd}, 1, #{name}, #{email});
+
+		insert into users_role values (#{id}, #{role});
 
 select * from users where id='user01' and pwd='1234';
 ------------------------------------------------------1
