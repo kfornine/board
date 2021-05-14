@@ -17,11 +17,16 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jmp.spring.mapper.LoginMapper;
+
 @Component
 public class MailService {		
 
 	@Autowired
 	Properties prop;
+	
+	@Autowired
+	LoginMapper mapper;
 	
 	public void MailSend(String reciver, String title, String content) {
 		
@@ -58,6 +63,7 @@ public class MailService {
 			
             // 메일 제목
 			msg.setSubject("환영합니다.", "UTF-8");
+			
 			// 메일 내용
 			msg.setText("가입을 축하드립니다.\n인증번호는 1234 입니다.", "UTF-8");
 			

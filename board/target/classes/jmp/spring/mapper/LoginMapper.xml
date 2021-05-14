@@ -6,7 +6,7 @@
 <mapper namespace="jmp.spring.mapper.LoginMapper">
 	
 	<select id="login" resultType="jmp.spring.vo.User">
-		select * from users where id=#{id} and pwd=#{pwd}
+		select * from users where id=#{id}
 	</select>
 
 	<select id="userRole" resultType="String">
@@ -35,5 +35,14 @@
 	<insert id="insertUserRole">
 		insert into users_role values (#{id}, #{role})
 	</insert>
+	
+	<select id="searchId" resultType="jmp.spring.vo.User">
+		select id from users where email = #{email}
+	</select>
+	
+	<select id="searchPwd" resultType="jmp.spring.vo.User">
+	select pwd from users where id = #{id} and name = #{name}
+    and email = #{email}	
+    </select>
 	
 </mapper>

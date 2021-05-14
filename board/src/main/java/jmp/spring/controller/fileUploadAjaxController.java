@@ -33,8 +33,8 @@ import net.coobird.thumbnailator.Thumbnails;
 public class fileUploadAjaxController {
 
 	//기본 경로
-	//private static final String ROOT_DIR = "C:\\upload\\";
-	private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
+	private static final String ROOT_DIR = "C:\\upload\\";
+	//private static final String ROOT_DIR = "D:\\sys\\spwork\\upload\\";
 	
 	@Autowired
 	AttachService service;

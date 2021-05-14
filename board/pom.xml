@@ -205,6 +205,25 @@
     <artifactId>javax.mail</artifactId>
     <version>1.6.0</version>
 </dependency>
+<!-- https://시큐리티.com/artifact/org.springframework.security/spring-security-core -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core</artifactId>
+    <version>5.4.5</version>
+</dependency>
+<!-- https://설정.com/artifact/org.springframework.security/spring-security-config -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-config</artifactId>
+    <version>5.4.5</version>
+</dependency>
+<!-- https://꼬리표입술.com/artifact/org.springframework.security/spring-security-taglibs -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-taglibs</artifactId>
+    <version>5.4.5</version>
+</dependency>
+
 
 		   
 	</dependencies>

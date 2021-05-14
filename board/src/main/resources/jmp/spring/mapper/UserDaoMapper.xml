@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="jmp.spring.mapper.IdSerachMapper">
+<!-- 아이디 찾기 -->
+	<select id="searchId" resultType="String">
+		select id from users 
+        where name = #{name}
+	</select>
+	
+	<!-- 회원 임시 비밀번호-->
+	<update id="searchPassword" parameterType="Map">
+		update users set user_pw = #{param3} where id = #{id} and email = #{email}
+	</update>
+</mapper>

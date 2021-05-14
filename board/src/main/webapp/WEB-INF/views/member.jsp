@@ -58,11 +58,15 @@
                                 <div class="form-group">
                                 	<p id="errorMsgArea">id/pw를 확인하세요</p>
                                 	<label>ID</label>
-                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus>
+                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus
+                                     pattern="[0-9A-Za-z]{5,12}">
                                 </div>
                                 <div class="form-group">
                                 	<label>Password</label>
-                                    <input class="form-control" placeholder="Password" name="pwd" type="password">
+                                    <input class="form-control" placeholder="Password" name="pwd" type="password"
+                                    pattern="[0-9A-Za-z]{5,12}"
+                                    maxlength="12"> <!-- 패턴 0-9,a-z 8자리 -->
+                                    
                                 </div>
                                 <div class="form-group">
                                 	<label>Name</label>

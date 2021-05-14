@@ -7,7 +7,7 @@ ${msg}<br>
 <button type=submit>로그아웃</button><br>
 로그인 사용자 : ${user}
 <br>
-<%=session.getAttribute("user") %>
+<%-- <%=session.getAttribute("user") %> --%>
 ${sessionScope.user }
 <br>
 </form>
