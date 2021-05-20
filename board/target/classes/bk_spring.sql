@@ -3,7 +3,10 @@
 --페이징,
 		insert into users (id, pwd, enabled, name, email)
 			values (#{id}, #{pwd}, 1, #{name}, #{email});
-
+		
+        insert into users (id, pwd, enabled, name, email)
+			values ('user05', '123456', 1, '이준기', 'leehjcap1@gmail.com');
+            
 		insert into users_role values (#{id}, #{role});
 
 select * from users where id='user01' and pwd='1234';
@@ -19,6 +22,8 @@ update users set sessionkey='sessionkey'
                 ,sessionlimit = sysdate + 7
 where id = 'user01';
 
+	select pwd from users where id = 'user01';
+select * from users where id = 'user01' or name = '';
 
 
 

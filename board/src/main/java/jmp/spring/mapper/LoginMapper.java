@@ -13,6 +13,8 @@ public interface LoginMapper { //crud create,read,delete,update
 	public int updateSessionKey(User user);
 	public User loginSessionKey(String sessionkey);
 	
+	public User checkId(String id);
+	
 	public int insertUser(User user);
 	public int insertUserRole(@Param("id")String id, @Param("role")String role);
 	

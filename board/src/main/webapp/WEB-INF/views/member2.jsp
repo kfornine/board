@@ -53,23 +53,31 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="/loginProcess" method="post">
+                        <form role="form" action="/registerMember" method="post">
                             <fieldset>
                                 <div class="form-group">
                                 	<p id="errorMsgArea">id/pw를 확인하세요</p>
-                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus value="user01">
+                                	<label>ID</label>
+                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus
+                                     pattern="[0-9A-Za-z]{5,12}">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="pwd" type="password" value="1234">
+                                	<label>Password</label>
+                                    <input class="form-control" placeholder="Password" name="pwd" type="password"
+                                    pattern="[0-9A-Za-z]{5,12}"
+                                    maxlength="12"> <!-- 패턴 0-9,a-z 8자리 -->
+                                    
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="useCookie" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
+                                <div class="form-group">
+                                	<label>Name</label>
+                                    <input class="form-control" placeholder="name" name="name" type="text">
+                                </div>
+                                <div class="form-group">
+                                	<label>Eamil</label>
+                                    <input class="form-control" placeholder="email" name="email" type="email">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
-                                <p><a href="/member">회원가입</a>&nbsp<a href="/find_pwd_form">비밀번호 찾기</a></p>
+                                <button type="submit" class="btn btn-lg btn-success btn-block">회원가입</button>
                             </fieldset>
                         </form>
                     </div>

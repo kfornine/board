@@ -57,6 +57,11 @@ public class LoginServiceImpl implements LoginService{
 	}
 
 	@Override
+	public User checkId(String id) {
+		return mapper.checkId(id);
+	}
+	
+	@Override
 	/**
 	 * 사용자권한 추가 
 	 */

@@ -22,6 +22,18 @@ public class LoginTest {
 	@Autowired
 	LoginService service;
 	
+	@Test
+	public void checkId() {
+		System.out.println(mapper.checkId("user01"));
+	}
+	
+	
+	@Test
+	public void logintest() {
+		User vo = new User();
+		vo.setId("user01");
+		service.login(vo);
+	}
 	
 	@Test
 	public void userslogintet() {

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 
 <head>
 
@@ -32,52 +31,141 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$("#errorMsgArea").text('${msg}');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$("#registerBtn").on("click", function(){
+			
+			let id = $("input[name=id]").val();
+			if($.isEmptyObject(id)){
+				alert("id를 입력해주세요");
+				return;
+			}
+			//등록 가능한 아이디이면 dataValue = true
+			//중복 체크가 안되있으면 중복체크 메세지를 출력
+			if(!$("input[name=id]").prop("dataValue")){
+				alert("id 중복검사를 해주세요");
+				return false;
+			}
+			if(checkPassword()){
+				return false;
+			};
+			
+			$("#registerForm").submit();
+			
+				$("#idCheck").on("click",function(){
+				//id 값 #id
+				let id = $("input[name=id]").val();
+				if($.isEmptyObject(id)){
+					alert("iid를 입력해주세요");
+					return;
+				}
+			});
 		});
-	</script>
-	
+		
+		
+		$("#idCheck").on("click", function(){
+			
+			let id = $("input[name=id]").val();
+			if($.isEmptyObject(id)){
+				alert("id를 입력해주세요");
+				return;
+			}
+			//아이디 체크여부 초기화
+			//아이디값을 변경헀을때
+			$("input[name=id]").prop("dataValue",false);
+			
+			//id가 등록이 되었는지 확인
+			$.ajax({
+				url : '/checkId/' + id,
+				method : 'get',
+				dataType : 'json',
+				success : function(data){
+					//이미 등록된 아이디인 경우
+					if(!data){
+						alert("이미 등록된 아이디 입니다.")
+					}else{
+						alert("등록 가능한 아이디 입니다.")
+						//회원가입버특클릭시 중복처리 했다고 알림
+						//속성값을 추가 해보자
+						$("input[name=id]").prop("dataValue",true);
+					}
+					//등록 가능한 아이디인 경우
+				},
+				error : function(){
+					console.log('error');
+				}
+			});
+			
+			
+			$("input[name=id]").prop("dataValue",false);
+			
+/* 			$.ajax({
+				url : '/idCheck/' + id,
+				method : 'get',
+				dataType : 'json',
+				success : function(result){
+					if(result){
+						console.log(result);
+						// 중복체크가 성공 처리 -> 회원가입 버튼 클릭시 dataValue값 확인
+						$("input[name=id]").prop("dataValue",true);
+						alert("사용 가능한 아이디 입니다");
+					} else{
+						alert("id가 중복되었습니다");
+					}
+				}
+			}); */
+		});	
+		
+		
+	});
+
+	function checkPassword(){
+		if(!($("input[name=pwd]").val() === $("input[name=pwdCheck]").val())){
+			 alert("비밀번호가 일치하지 않습니다.");
+		} 
+	}
+</script>
+
 </head>
 
 <body>
 
     <div class="container">
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-5">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
+                        <h3 class="panel-title">회원가입</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="/registerMember" method="post">
+                        <form role="form" id="registerForm" action="/registerMember" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                	<p id="errorMsgArea">id/pw를 확인하세요</p>
-                                	<label>ID</label>
-                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus
-                                     pattern="[0-9A-Za-z]{5,12}">
+                                	<p id="errorMsgArea"></p>
+                                	<label>ID</label><br>
+                                    <input class="form-control" placeholder="id" name="id" id="id"
+                                    pattern="[0-9A-Za-z]{6,20}"
+                                    autofocus required>
+                                    <button class="form-control" id="idCheck" type="button" >중복 확인</button>
                                 </div>
                                 <div class="form-group">
-                                	<label>Password</label>
-                                    <input class="form-control" placeholder="Password" name="pwd" type="password"
-                                    pattern="[0-9A-Za-z]{5,12}"
-                                    maxlength="12"> <!-- 패턴 0-9,a-z 8자리 -->
-                                    
+                                	<label>PASSWORD</label>
+                                    <input class="form-control" placeholder="Password" name="pwd" type="password" required minlength="12" 
+                                    pattern = "[0-9A-Za-z!@#$%^&*()]{12,}">
+                                    <input class="form-control" placeholder="PasswordCheck" name="pwdCheck" type="password" required minlength="12" onchange="checkPassword()">
                                 </div>
                                 <div class="form-group">
-                                	<label>Name</label>
-                                    <input class="form-control" placeholder="name" name="name" type="text">
+                                	<label>이름</label>
+                                    <input class="form-control" placeholder="name" name="name" required maxlength="5">
                                 </div>
                                 <div class="form-group">
-                                	<label>Eamil</label>
-                                    <input class="form-control" placeholder="email" name="email" type="email">
+                                	<label>EMAIL</label>
+                                    <input class="form-control" placeholder="email" name="email" type="email" required>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block">회원가입</button>
+                                <button type="submit" id="registerBtn" class="btn btn-lg btn-success btn-block">회원가입</button>
                             </fieldset>
                         </form>
                     </div>

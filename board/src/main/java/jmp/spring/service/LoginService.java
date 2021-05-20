@@ -9,6 +9,8 @@ public interface LoginService {
 	
 	public User loginSessionKey(String sessionkey);
 
+	public User checkId(String id);
+	
 	public int insertUser(User user);
 	
 	public User searchId(User user);

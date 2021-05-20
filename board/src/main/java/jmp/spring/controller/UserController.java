@@ -7,13 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
 import jmp.spring.service.LoginService;
@@ -30,6 +34,22 @@ public class UserController {
 	
 	@Autowired
 	MailService email;
+	
+	@Autowired
+	MailSender sender;
+	
+	//맵핑가서 처리후 다른사이트를  비밀번호입력
+	@RequestMapping("/mail")
+	public String sendMail(User user, Model model) {
+		User us = service.searchPwd(user);
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setTo(us.getEmail()); //보내는 경로
+		msg.setSubject("비밀번호확인해주세요");
+		msg.setText("비밀번호는"+us.getPwd());
+		msg.setFrom("leehjcap4@gmail.com");
+		sender.send(msg);
+		return "find_pwd";
+	}
 	
 	// 아이디 찾기
 	@RequestMapping(value = "/find_id_form", method = RequestMethod.GET)
@@ -60,7 +80,7 @@ public class UserController {
 		}
 		model.addAttribute("pwd", us.getPwd());
 		
-		email.welcomeMailSend();
+		//email.welcomeMailSend();
 		return "find_pwd";
 	}
 	
@@ -146,6 +166,19 @@ public class UserController {
 		}catch (Exception e) {
 			e.printStackTrace();
 			return "/error";
+		}
+	}
+	
+	@GetMapping("/checkId/{id}")
+	@ResponseBody
+	public boolean checkId(@PathVariable("id") String id) {
+		//아이디 중복 체크
+		if(service.checkId(id) != null) {
+			//아이디 있음
+			return false;
+		}else{
+			//아이디 없음
+			return true;
 		}
 	}
 }
