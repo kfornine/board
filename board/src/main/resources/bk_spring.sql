@@ -61,6 +61,8 @@ CREATE TABLE MENU
 	VISIBLE CHAR(1 BYTE)
 );
 
+select * from menu;
+
 Insert into SPRING.MENU (MENU_ID,TITLE,URL,UP_MENU_ID,SORT,VISIBLE) values ('m01','대메뉴1','/board/list',null,1,'Y');
 Insert into SPRING.MENU (MENU_ID,TITLE,URL,UP_MENU_ID,SORT,VISIBLE) values ('m02','대메뉴2','/board/list',null,2,'Y');
 Insert into SPRING.MENU (MENU_ID,TITLE,URL,UP_MENU_ID,SORT,VISIBLE) values ('m03','대메뉴3','/board/list',null,3,'Y');
