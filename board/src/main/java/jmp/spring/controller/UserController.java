@@ -1,5 +1,7 @@
 package jmp.spring.controller;
 
+import java.util.UUID;
+
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -41,11 +43,18 @@ public class UserController {
 	//맵핑가서 처리후 다른사이트를  비밀번호입력
 	@RequestMapping("/mail")
 	public String sendMail(User user, Model model) {
+	  	String uuid = null;
+		 for (int i = 0; i < 5; i++) {
+		        uuid = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
+		        uuid = uuid.substring(0, 10); //uuid를 앞에서부터 10자리 잘라줌.
+		  }
 		User us = service.searchPwd(user);
+		
 		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setTo(us.getEmail()); //보내는 경로
+		msg.setTo("leehjcap1@gmail.com"); //보내는 경로
 		msg.setSubject("비밀번호확인해주세요");
-		msg.setText("비밀번호는"+us.getPwd());
+		msg.setText("임시비밀번호는"+uuid+"기존비밀번호"+us.getPwd());
+		//비밀번호 업데이트 서비스
 		msg.setFrom("leehjcap4@gmail.com");
 		sender.send(msg);
 		return "find_pwd";
@@ -129,6 +138,9 @@ public class UserController {
 	public String loginProcesss(User vo, Model model, HttpServletRequest request) {
 		
 		User user = service.login(vo);
+		//메뉴 생성 서비스
+		
+		
 		
 		if(user == null) {
 			model.addAttribute("msg","로그인에 실패하였습니다 \nId,Pwd를 확인하세요");

@@ -53,6 +53,9 @@
 
 	<!--LoginInterceptor를 Bean으로 등록 합니다.-->
 	<beans:bean id="loginInterceptor" class="jmp.spring.interceptor.LoginInterceptor"></beans:bean>
+	
+	<!--MenuInterceptor를 Bean으로 등록 합니다.-->
+	<beans:bean id="menuInterceptor" class="jmp.spring.interceptor.MenuInterceptor"></beans:bean>
 		
 	<interceptors>
 <!-- 	<interceptor>
@@ -61,7 +64,13 @@
 		</interceptor> -->
 		
 		<interceptor>
-			<mapping path="/board/list"/>
+			<mapping path="/**"/>
+			<beans:ref bean="menuInterceptor"/>
+		</interceptor>
+		
+		
+		<interceptor>
+			<mapping path="/board/list2"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 		

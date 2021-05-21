@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jmp.spring.mapper.LoginMapper;
+import jmp.spring.vo.Menu;
 import jmp.spring.vo.User;
 
 @Service
@@ -88,6 +89,12 @@ public class LoginServiceImpl implements LoginService{
 	@Override
 	public User searchPwd(User user) {
 		return mapper.searchPwd(user);
+	}
+
+	@Override
+	public List<Menu> menu() {
+		// 메뉴 리스트 가져오기
+		return mapper.menu();
 	}
 
 

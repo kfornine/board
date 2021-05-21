@@ -1,5 +1,8 @@
 package jmp.spring.service;
 
+import java.util.List;
+
+import jmp.spring.vo.Menu;
 import jmp.spring.vo.User;
 
 public interface LoginService {
@@ -15,4 +18,6 @@ public interface LoginService {
 	
 	public User searchId(User user);
 	public User searchPwd(User user);
+	
+	public List<Menu> menu();
 }

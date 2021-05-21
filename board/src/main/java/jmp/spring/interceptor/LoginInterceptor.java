@@ -84,18 +84,22 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			 * 여기에 저장되는 value 값과 user테이블의 sessionkey에 저장되는 값은 동일해야함
 			 * 
 			 * */
-			//*****자동로그인을 위한 쿠키를 생성 합니다.*****
-			 Cookie loginCookie = new Cookie("loginCookie", session.getId());
-			 //1.유효기간과 경로를 지정합니다
-			 loginCookie.setMaxAge(60*60*24*7); //7일
-			 loginCookie.setPath("/");
-			 //자동로그인을 위해 생성한 쿠키를 response 객체에 저장 합니다.
-			 response.addCookie(loginCookie);
+
+
 			 //2.db에 세션 키값과 유효기간을 저장
 			 //자동로그인시 저장된 쿠키값을 db에서 조회
 			 user.setSessionkey(session.getId()); 
 			 service.updateSessionKey(user);
 
+				//*****자동로그인을 위한 쿠키를 생성 합니다.*****
+			 Cookie loginCookie = new Cookie("loginCookie", session.getId());
+			 //1.유효기간과 경로를 지정합니다
+			 loginCookie.setMaxAge(60*60*24*7); //7일
+			 loginCookie.setPath("/");
+			 
+			 //자동로그인을 위해 생성한 쿠키를 response 객체에 저장 합니다.
+			 response.addCookie(loginCookie);
+			 
 			 //만약 자동로그인시 지정된 tmpUri가 세션에 존재한다면 
 			 //원래 요청한 페이지가 있었다면 그 요청 페이지로 이동
 			 

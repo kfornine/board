@@ -33,6 +33,13 @@
     <![endif]-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	$("input[name=id]").on("change",function(){
+		$("input[name=id]").prop("dataValue",false);
+		$("input[name=id]").attr("dataValue",false);
+	});
+});
+
 	$(document).ready(function(){
 		
 		$("#registerBtn").on("click", function(){
