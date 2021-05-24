@@ -76,6 +76,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		 */
 		if(user != null 
 				&& request.getParameter("useCookie") != null) { //useCookie 체크박스에 체크되있다면
+			
 			/**
 			 * 
 			 * users테이블에 쿠기정보를 저장합니다

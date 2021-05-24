@@ -70,7 +70,7 @@
 		
 		
 		<interceptor>
-			<mapping path="/board/list2"/>
+			<mapping path="/board/list"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 		

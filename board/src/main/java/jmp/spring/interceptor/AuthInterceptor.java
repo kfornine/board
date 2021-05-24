@@ -38,7 +38,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 			//자동로그인 사용자(로그인쿠키가 있으면)
 			if(loginCookie != null) {
 				user = service.loginSessionKey(loginCookie.getValue());
-				//널처리
+				//널처리 (유저가 있을때만)
 				if(user != null) {
 					//세션에 유저 객체를 생성
 					session.setAttribute("user", user);
@@ -54,26 +54,32 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 			if(user.hasRole("ROLE_USER")) { //참이면 true
 				//로그인이 되어있고 권한이 충분한 자만이 /board/list에 접근
 				return true;		
+			}else {
+				
+				//만약 로그인을 안했거나 권한이 없다면 로그인 페이지로 이동 합니다.
+				//원래 요청했던 페이지와 파라메터를 세션에 저장 합니다. --> 세션 삭제해야함
+				System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n"+request.getRequestURI());
+				System.out.println(request.getQueryString());
+				
+				String tmpUri = request.getRequestURI(); //기존에 요청의 uri페이지 정보
+				String query= request.getQueryString(); //기존 요청의 파라메터
+				
+				if(query != null) {
+					tmpUri += "?" + query;
+				}
+				//loginprocess?
+				session.setAttribute("tmpUri", tmpUri);
+				
+				//로그인 안함	
+				response.sendRedirect("/login");
+				return false;
+				
 			}
+		}else {
+			response.sendRedirect("/login");
+			return false;
 		}
 		
-		//만약 로그인을 안했거나 권한이 없다면 로그인 페이지로 이동 합니다.
-		//원래 요청했던 페이지와 파라메터를 세션에 저장 합니다. --> 세션 삭제해야함
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n"+request.getRequestURI());
-		System.out.println(request.getQueryString());
-		
-		String uri = request.getRequestURI(); //기존에 요청의 uri페이지 정보
-		String query= request.getQueryString(); //기존 요청의 파라메터
-		
-		if(query != null) {
-			uri += "?" + query;
-		}
-		//loginprocess?
-		session.setAttribute("tmpUri", uri);
-		
-		//로그인 안함	
-		response.sendRedirect("/login");
-		return false;
 	}
 
 	/**

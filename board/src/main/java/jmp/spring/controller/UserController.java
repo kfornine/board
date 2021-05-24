@@ -123,7 +123,7 @@ public class UserController {
 		//로그아웃을 하게 되면 더이상 자동로그인을 할 수 없습니다
 		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 		
-		//널처리 , 로그인 쿠키가 있을때만 처리(없으면 실행안하고 login불러옴)
+		//널처리 , 로그인 쿠키가 있을때만 처리(없으면 실행안하고 login불러옴), 쿠키 기간0으로
 		if(loginCookie != null) {
 			loginCookie.setMaxAge(0);
 			loginCookie.setPath("/");
@@ -138,12 +138,11 @@ public class UserController {
 	public String loginProcesss(User vo, Model model, HttpServletRequest request) {
 		
 		User user = service.login(vo);
+		
 		//메뉴 생성 서비스
 		
-		
-		
 		if(user == null) {
-			model.addAttribute("msg","로그인에 실패하였습니다 \nId,Pwd를 확인하세요");
+			model.addAttribute("msg","로그인에 실패하였습니다 Id,Pwd를 확인하세요");
 			return "/login";
 			
 		}else {
@@ -152,7 +151,6 @@ public class UserController {
 			session.setAttribute("user", user);
 			
 			log.info("\n\n\n\n\n\n"+user);
-			
 			
 			model.addAttribute("msg",user.getId()+"님 로그인에 성공하였습니다");
 			return "/loginProcess";

@@ -57,10 +57,10 @@
                             <fieldset>
                                 <div class="form-group">
                                 	<p id="errorMsgArea">id/pw를 확인하세요</p>
-                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus value="user01">
+                                    <input class="form-control" placeholder="id" name="id" type="text" autofocus value="user06">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="pwd" type="password" value="1234">
+                                    <input class="form-control" placeholder="Password" name="pwd" type="password" value="12345">
                                 </div>
                                 <div class="checkbox">
                                     <label>

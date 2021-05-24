@@ -62,10 +62,11 @@ public class LoginServiceImpl implements LoginService{
 		return mapper.checkId(id);
 	}
 	
-	@Override
+	
 	/**
 	 * 사용자권한 추가 
 	 */
+	@Override
 	public int insertUser(User user) {
 		// TODO: 비밀번호 암호화 작업이 추가
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

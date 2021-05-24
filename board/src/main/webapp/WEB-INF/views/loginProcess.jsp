@@ -5,6 +5,8 @@
 <form method="get" action="/logout">
 ${msg}<br>
 <button type=submit>로그아웃</button><br>
+<button type="button" onclick="location.href='board/list'">게시판</button><br>
+
 로그인 사용자 : ${user}
 <br>
 <%-- <%=session.getAttribute("user") %> --%>
