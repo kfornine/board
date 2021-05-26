@@ -1,5 +1,7 @@
 package jmp.spring.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.mail.internet.MimeMessage;
@@ -13,9 +15,11 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +43,51 @@ public class UserController {
 	
 	@Autowired
 	MailSender sender;
+	
+	@PostMapping("/searchId")
+	@ResponseBody
+	public Map<String, String> serchId(@RequestBody User user) { //화면에서 넘오면 유저, 맵으로 반환
+		String id = service.searchId2(user); //id찾기 서비스
+		Map<String, String> res = new HashMap<String, String>();
+		if(StringUtils.isEmpty(id)) { //id가 있으면
+			res.put("msg", "이름/이메일에 일치하는 아이디가 없습니다");
+		}else {
+			res.put("msg", "아이디는" + id + "입니다");
+		}
+		return res; //맵<"msg","값"> 보내줌
+		
+	}
+	
+	@PostMapping("/searchPwd")
+	@ResponseBody  //url반환이 아닌 객체를 반환 (rest컨트롤러형식, url에 정보를 저장해서보내는것이 아니라 있는 페이지에 객체(맵,또는 String등등)를 전해줌)
+	public Map<String, String> searchPwd(@RequestBody User vo) { //화면에서 넘어오는값 가져오기
+		Map<String, String> res = new HashMap<String, String>();
+
+		//유저 가져오기(url에선 new로 생성)
+		User user = service.searchPwd2(vo);
+		
+		if(user != null) {
+			//유저가 있으면 비밀번호 업데이트
+			String pwd = UUID.randomUUID().toString().substring(0, 7);
+			user.setPwd(pwd);
+			//비밀번호 업데이트
+			int updateRes = service.updatePwd2(user);
+			//비밀번호 업데이트 결과 확인
+			if(updateRes>0) {
+				//업데이트가 있으면 이메일 전송(pwd,유저이메일을 매개변수로)하고 boolean반환
+				if(email.sendPwd(pwd, user.getEmail())) {
+					res.put("msg", "임시비밀번호를 메일로 전송했습니다");
+				}else {
+					res.put("msg", "메일전송에 실패했습니다. 관리자에게 문의해주세요");
+				}
+			}
+		}else {
+			//사용자 없음
+			res.put("msg", "일치하는사용자가없습니다");
+		}
+		
+		return res;
+	}
 	
 	//맵핑가서 처리후 다른사이트를  비밀번호입력
 	@RequestMapping("/mail")
@@ -111,6 +160,10 @@ public class UserController {
 	
 	@GetMapping("/login")
 	public void loginn() {
+		
+	}
+	@GetMapping("/login4")
+	public void loginn4() {
 		
 	}
 	

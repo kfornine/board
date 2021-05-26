@@ -52,7 +52,7 @@
 	<!-- 메뉴냠 -->
 	<select id="menu" resultType="jmp.spring.vo.Menu">
 		SELECT
-    level, -- 루트를 기준으로 1레벨 시작
+    level, -- 루트를 기준으로 1레벨 시작	
     up_menu_id, -- 상위메뉴
     menu_id, -- 메뉴
     title, -- 메뉴명
@@ -64,5 +64,16 @@ CONNECT BY up_menu_id = PRIOR menu_id  -- 부모 자식관계
 ORDER SIBLINGS BY  sort -- 정렬
 	</select>
 	
+	<select id="searchId2" resultType="String">
+	select id from users where name=#{name} and email=#{email}
+	</select>
+	
+	<select id="searchPwd2" resultType="jmp.spring.vo.User">
+	select * from users where id=#{id} and email=#{email}
+	</select>
+	
+	<update id="updatePwd2">
+	update users set pwd=#{pwd} where id=#{id} and email=#{email}
+	</update>
 	
 </mapper>

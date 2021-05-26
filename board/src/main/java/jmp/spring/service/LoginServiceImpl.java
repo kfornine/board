@@ -98,6 +98,26 @@ public class LoginServiceImpl implements LoginService{
 		return mapper.menu();
 	}
 
+	@Override
+	public String searchId2(User user) {
+		return mapper.searchId2(user);
+	}
+
+	@Override
+	public User searchPwd2(User user) {
+		return mapper.searchPwd2(user);
+	}
+
+	@Override
+	public int updatePwd2(User user) {
+		//비밀번호 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String encodePwd = encoder.encode(user.getPwd());
+		user.setPwd(encodePwd);
+		
+		return mapper.updatePwd2(user);
+	}
+
 
 
 }

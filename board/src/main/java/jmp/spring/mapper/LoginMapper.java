@@ -26,6 +26,11 @@ public interface LoginMapper { //crud create,read,delete,update
 	
 	public List<Menu> menu();
 	
+	public String searchId2(User user);
+	public User searchPwd2(User user);
+	
+	public int updatePwd2(User user);
+	
 	/*
 	 * 자동 로그인을 위한 키값과 유효기간을 저장합니다
 	 * -로그인 사용자의 아이디
