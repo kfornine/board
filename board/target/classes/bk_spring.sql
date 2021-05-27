@@ -86,7 +86,8 @@ FROM
 START WITH up_menu_id IS NULL -- 루트노드(시작)는 상위메뉴가 null
 CONNECT BY up_menu_id = PRIOR menu_id  -- 부모 자식관계
 ORDER SIBLINGS BY  sort; -- 정렬
- 
+
+alter table ousers add colum email varchar(255);
  
 -- 권한 테이블 생성 
 -- 다중 PK를 설정 할 경우 제약조건으로 하단에 추가 합니다. 	
@@ -103,8 +104,8 @@ insert into users (id, pwd, enabled, name, email) values ('user03', '1234', '1',
 
  
 -- 사용자별 권한 등록
-insert into users_role (id, role_id) values ('user01', 'ROLE_USER');
-insert into users_role (id, role_id) values ('user01', 'ROLE_ADMIN');
+insert into ousers_role (id, role_id) values ('user01', 'ROLE_USER');
+insert into ousers_role (id, role_id) values ('user01', 'ROLE_ADMIN');
 insert into users_role (id, role_id) values ('user02', 'ROLE_USER');
 insert into users_role (id, role_id) values ('user03', 'ROLE_USER');
 
